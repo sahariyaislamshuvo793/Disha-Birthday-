@@ -145,7 +145,7 @@ button{
 
 <h1>🎉 Happy Birthday 🎉</h1>
 
-<img src="photo.jpg" alt="Birthday">
+<img src="1783603214477.jpg" alt="Birthday">
 
 <p>Wishing you a day full of love, happiness and smiles. ❤️</p>
 
