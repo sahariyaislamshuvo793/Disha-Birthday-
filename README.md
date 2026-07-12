@@ -64,7 +64,7 @@ button:hover{
 <h1>🎉 Happy Birthday! 🎂</h1>
 <p>Wishing you happiness, success and endless joy.<br>Have a wonderful day! 💖</p>
 
-<button onclick="showWish()">Click Me 🎁</button>
+<button onclick="Happy Birthday! Wishing you endless happiness, good health, and success. May all your dreams come true. ❤️🎂()">Click Me 🎁</button>
 </div>
 
 <script>
