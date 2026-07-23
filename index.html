@@ -1181,3 +1181,238 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag to Rotate 360 Card</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      user-select: none; /* ড্র্যাগ করার সময় লেখা যেন সিলেক্ট না হয় */
+    }
+
+    .instruction {
+      margin-bottom: 20px;
+      color: #38bdf8;
+      font-size: 14px;
+    }
+
+    /* Card Container */
+    .card-container {
+      width: 240px;
+      height: 350px;
+      perspective: 1000px;
+      cursor: grab;
+    }
+
+    .card-container:active {
+      cursor: grabbing;
+    }
+
+    /* Inner Card */
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      /* JavaScript দিয়ে এটি স্মুথলি ঘুরবে */
+    }
+
+    /* Face shared styles */
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* FRONT SIDE */
+    .card-front {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+    }
+
+    .card-image-wrapper {
+      width: 100%;
+      height: 200px;
+    }
+
+    .card-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* ড্র্যাগ করার সময় ছবি টেনে যেন উঠে না আসে */
+    }
+
+    .card-front-info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .place-title {
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    .place-subtitle {
+      font-size: 13px;
+      color: #38bdf8;
+      margin-top: 5px;
+    }
+
+    /* BACK SIDE */
+    .card-back {
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      padding: 20px;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .back-header {
+      border-bottom: 1px solid #38bdf8;
+      padding-bottom: 6px;
+    }
+
+    .back-header h4 {
+      font-size: 15px;
+      color: #38bdf8;
+    }
+
+    .details-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .detail-item label {
+      display: block;
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .detail-item span {
+      font-size: 13px;
+      color: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="instruction">👈 হাত বা মাউস দিয়ে ধরে ডানে-বামে ড্র্যাগ করে ঘুরাও 👉</p>
+
+  <div class="card-container" id="cardContainer">
+    <div class="card" id="card">
+      
+      <!-- FRONT SIDE -->
+      <div class="card-face card-front">
+        <div class="card-image-wrapper">
+          <img src="photo1.jpg" alt="Photo">
+        </div>
+        <div class="card-front-info">
+          <h3 class="place-title">সাজেক ভ্যালি</h3>
+          <p class="place-subtitle">রাঙ্গামাটি, বাংলাদেশ</p>
+        </div>
+      </div>
+
+      <!-- BACK SIDE -->
+      <div class="card-face card-back">
+        <div class="back-header">
+          <h4>Location Details</h4>
+        </div>
+        <div class="details-group">
+          <div class="detail-item">
+            <label>স্থান</label>
+            <span>মেঘের উপত্যকা সাজেক</span>
+          </div>
+          <div class="detail-item">
+            <label>অবস্থান</label>
+            <span>বাঘাইছড়ি, রাঙ্গামাটি</span>
+          </div>
+          <div class="detail-item">
+            <label>বিবরণ</label>
+            <span>পাহাড়ের চূড়ায় মেঘের ছোঁয়া পাওয়ার অপূর্ব পর্যটন কেন্দ্র।</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT FOR DRAG TO ROTATE -->
+  <script>
+    const container = document.getElementById('cardContainer');
+    const card = document.getElementById('card');
+
+    let isDragging = false;
+    let startX = 0;
+    let currentRotation = 0;
+
+    // Mouse & Touch events
+    container.addEventListener('mousedown', startDrag);
+    container.addEventListener('touchstart', startDrag);
+
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('touchmove', drag);
+
+    window.addEventListener('mouseup', stopDrag);
+    window.addEventListener('touchend', stopDrag);
+
+    function startDrag(e) {
+      isDragging = true;
+      // মাউস অথবা টাচ পয়েন্টের X পজিশন নেওয়া
+      startX = e.pageX || e.touches[0].pageX;
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      
+      const x = e.pageX || e.touches[0].pageX;
+      const distance = x - startX;
+      
+      // হাত দিয়ে যতখানি সরাবে সেই অনুযায়ী ঘুরবে
+      const newRotation = currentRotation + distance * 0.8;
+      card.style.transform = `rotateY(${newRotation}deg)`;
+    }
+
+    function stopDrag(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      // কতটুকু ঘুরেছে তা সেভ করে রাখা
+      const transformValue = card.style.transform;
+      if (transformValue) {
+        const match = transformValue.match(/rotateY\(([^deg]+)deg\)/);
+        if (match) {
+          currentRotation = parseFloat(match[1]);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
