@@ -262,6 +262,25 @@
             background: linear-gradient(90deg, var(--accent), var(--primary), var(--secondary));
         }
 
+        /* FB Featured Post Card */
+        .fb-post-card {
+            max-width: 500px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .fb-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+        }
+
         /* Contact Section */
         .contact-section {
             background: var(--card-bg);
@@ -482,6 +501,20 @@
             </div>
         </div>
 
+        <!-- Facebook Featured Post -->
+        <h2 class="section-title">Featured Post</h2>
+        <div class="fb-post-card">
+            <div style="font-size: 2.8rem; color: var(--primary); margin-bottom: 12px;">
+                <i class="fab fa-facebook"></i>
+            </div>
+            <h3 style="color: #fff; margin-bottom: 8px;">Facebook Post & Picture</h3>
+            <p style="color: var(--text-sub); font-size: 0.95rem; margin-bottom: 22px;">আমার সাম্প্রতিক ফেসবুক পোস্ট এবং ফিচারড ছবি দেখতে নিচের বাটনে ক্লিক করুন</p>
+            
+            <a href="https://www.facebook.com/share/p/1BfFYqSJjK/" target="_blank" style="display: inline-block; padding: 14px 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; text-decoration: none; font-weight: 700; border-radius: 12px; transition: 0.3s; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);">
+                <i class="fas fa-external-link-alt"></i> View Post on Facebook
+            </a>
+        </div>
+
         <!-- Visited Highlights -->
         <h2 class="section-title">Explored Highlights</h2>
         <div class="travel-grid">
@@ -514,7 +547,7 @@
             <button class="ai-close-btn" id="aiCloseBtn"><i class="fas fa-times"></i></button>
         </div>
         <div class="ai-messages" id="aiMessages">
-            <div class="msg bot">হ্যালো! আমি শাহরিয়ার ইসলাম শুভ-এর রিয়েল এআই অ্যাসিস্ট্যান্ট। আমাকে যেকোনো কিছু জিজ্ঞেস করতে পারো—আমি গুগলের মতো সব প্রশ্নের রিয়েল-টাইম উত্তর দিতে পারি!</div>
+            <div class="msg bot">হ্যালো! আমি শাহরিয়ার ইসলাম শুভ-এর রিয়েল এআই অ্যাসিস্ট্যান্ট। আমাকে যেকোনো কিছু জিজ্ঞেস করতে পারো—আমি সব প্রশ্নের রিয়েল-টাইম উত্তর দিতে পারি!</div>
         </div>
         <div class="ai-input-area">
             <input type="text" id="aiInput" placeholder="যেকোনো কিছু জিজ্ঞেস করুন...">
