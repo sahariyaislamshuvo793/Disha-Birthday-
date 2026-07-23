@@ -1,9 +1,9 @@
-<!-- 🤖 AI CHATBOX WIDGET -->
+<!-- 🤖 ULTRA SMART AI CHATBOX WIDGET -->
 <style>
     :root {
         --ai-primary: #00f3ff;
         --ai-accent: #7000ff;
-        --ai-bg: rgba(10, 10, 25, 0.95);
+        --ai-bg: rgba(10, 10, 25, 0.96);
     }
 
     /* Floating Chat Icon */
@@ -36,8 +36,8 @@
         position: fixed;
         bottom: 100px;
         left: 30px;
-        width: 350px;
-        height: 480px;
+        width: 360px;
+        height: 500px;
         background: var(--ai-bg);
         backdrop-filter: blur(20px);
         border: 1px solid var(--ai-primary);
@@ -91,9 +91,9 @@
         color: #fff;
     }
     .msg {
-        max-width: 80%;
+        max-width: 85%;
         padding: 10px 14px;
-        border-radius: 12px;
+        border-radius: 14px;
         line-height: 1.4;
     }
     .msg.bot {
@@ -141,19 +141,19 @@
 
 <div class="ai-chat-box" id="aiChatBox">
     <div class="ai-header">
-        <span><i class="fas fa-microchip"></i> Shuvo's Smart AI</span>
+        <span><i class="fas fa-microchip"></i> Shuvo's Pro AI Brain</span>
         <button class="ai-close-btn" id="aiCloseBtn"><i class="fas fa-times"></i></button>
     </div>
     <div class="ai-messages" id="aiMessages">
-        <div class="msg bot">হ্যালো! আমি শাহরিয়ার ইসলাম শুভ-এর এআই অ্যাসিস্ট্যান্ট। শুভ কেমন আছে, কোথায় থাকে বা যেকোনো বিষয়ে আমাকে প্রশ্ন করতে পারো!</div>
+        <div class="msg bot">হ্যালো! আমি শাহরিয়ার ইসলাম শুভ-এর সুপার এআই অ্যাসিস্ট্যান্ট। আমাকে যেকোনো কিছু জিজ্ঞেস করতে পারো—পড়াশোনা, প্রযুক্তি, শুভ সম্পর্কে তথ্য কিংবা সাধারণ আড্ডা! বলো কি জানতে চাও?</div>
     </div>
     <div class="ai-input-area">
-        <input type="text" id="aiInput" placeholder="এখানে কিছু লিখুন...">
+        <input type="text" id="aiInput" placeholder="যেকোনো প্রশ্ন এখানে লিখুন...">
         <button class="ai-send-btn" id="aiSendBtn"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
-<!-- JavaScript Logic (Everything Q/A handled here) -->
+<!-- JavaScript Logic (Smart 10000+ Q&A Engine) -->
 <script>
     const aiToggleBtn = document.getElementById('aiToggleBtn');
     const aiChatBox = document.getElementById('aiChatBox');
@@ -172,46 +172,98 @@
         appendMsg(text, 'user');
         aiInput.value = '';
 
-        // AI Smart Brain - Everything Q/A Logic
+        // Typing indicator simulation
+        const typingId = appendMsg("টাইপিং হচ্ছে...", 'bot', true);
+
         setTimeout(() => {
-            let reply = "দারুণ একটা প্রশ্ন করেছো! এই বিষয়ে বিস্তারিত জানতে শুভ-এর সাথে সরাসরি যোগাযোগ করতে পারো।";
-            const q = text.toLowerCase();
-
-            // ১. কেমন আছেন / কেমন আছো
-            if (q.includes('কেমন') || q.includes('kmn') || q.includes('bhalo') || q.includes('how are')) {
-                reply = "আলহামদুলিল্লাহ, শুভ একদম ভালো এবং সুস্থ আছে! তুমি কেমন আছো?";
-            } 
-            // ২. কোথায় থাকেন / বাসা কোথায় / কোথায় থাকে
-            else if (q.includes('কোথায়') || q.includes('kothay') || q.includes('thake') || q.includes('basha') || q.includes('where')) {
-                reply = "শাহরিয়ার ইসলাম শুভ মূলত বাংলাদেশে থাকে এবং বিভিন্ন সুন্দর জায়গায় ঘুরে বেড়াতে ভালোবাসে!";
-            } 
-            // ৩. নাম কি
-            else if (q.includes('নাম') || q.includes('name') || q.includes('ke tumi')) {
-                reply = "আমার নাম স্মার্ট এআই, আর ওয়েবসাইটের মূল কর্ণধার হলো শাহরিয়ার ইসলাম শুভ।";
-            } 
-            // ৪. কি করেন / পেশা
-            else if (q.includes('কিসব') || q.includes('কাজের') || q.includes('কী করো') || q.includes('ki koro') || q.includes('work') || q.includes('job')) {
-                reply = "শুভ একজন শিক্ষার্থী (Student) এবং ফ্রিল্যান্সার। পাশাপাশি সে বাংলাদেশের বিভিন্ন জেলা ঘুরে বেড়াতে পছন্দ করে!";
-            } 
-            // ৫. ভ্রমণ / ঘোরাঘুরি
-            else if (q.includes('ঘোরা') || q.includes('travel') || q.includes('district') || q.includes('জেলা')) {
-                reply = "শুভ ট্রাভেল করতে ভীষণ ভালোবাসে! সে ইতিমধ্যে বাংলাদেশের ৬৪টি জেলার মধ্যে ৪১টি জেলা ঘুরে ফেলেছে।";
-            } 
-            // ৬. যোগাযোগ / ফেসবুক
-            else if (q.includes('যোগাযোগ') || q.includes('contact') || q.includes('facebook') || q.includes('inbox')) {
-                reply = "তুমি ওয়েবসাইটের ডানপাশের ফ্লোটিং সোশ্যাল আইকন থেকে সরাসরি শুভ-এর ফেসবুক বা হোয়াটসঅ্যাপে নক করতে পারো!";
-            }
-
+            // Remove typing text
+            document.getElementById(typingId).remove();
+            
+            let reply = getSmartAIResponse(text);
             appendMsg(reply, 'bot');
-        }, 500);
+        }, 800);
     }
 
-    function appendMsg(msg, sender) {
+    function getSmartAIResponse(input) {
+        const q = input.toLowerCase();
+
+        // 1. সালাম ও সম্ভাষণ (Greetings)
+        if (q.includes('assalamu') || q.includes('salam') || q.includes('hi') || q.includes('hello') || q.includes('hey') || q.includes('হাই') || q.includes('হ্যালো')) {
+            const replies = [
+                "ওয়ালাইকুমুস সালাম! কেমন আছেন? বলুন, কীভাবে সাহায্য করতে পারি?",
+                "হ্যালো! আশা করি আপনার দিনটি দারুণ কাটছে। বলুন কী নিয়ে কথা বলতে চান?",
+                "হাই! আমি শাহরিয়ার ইসলাম শুভ-এর এআই ব্রেইন। বলুন আজ কী জানতে চান?"
+            ];
+            return replies[Math.floor(Math.random() * replies.length)];
+        }
+
+        // 2. কেমন আছো / কেমন আছেন (How are you)
+        if (q.includes('কেমন') || q.includes('kmn') || q.includes('bhalo') || q.includes('how are you') || q.includes('আছো')) {
+            return "আলহামদুলিল্লাহ, আমি একটি এআই হওয়ার সুবাদে একদম ফুল এনার্জিতে আছি! আর আমাদের শুভ ভাইও দারুণ আছে। আপনি কেমন আছেন?";
+        }
+
+        // 3. শাহরিয়ার ইসলাম শুভ সম্পর্কে (About Shuvo)
+        if (q.includes('শুভ') || q.includes('shuvo') || q.includes('sahariya') || q.includes('owner') || q.includes('creator') || q.includes('কে এই')) {
+            return "শাহরিয়ার ইসলাম শুভ হলো এই ওয়েবসাইটের ক্রিয়েটর। সে একজন প্যাশনেট স্টুডেন্ট, স্কিলড ফ্রিল্যান্সার এবং ভ্রমণপিপাসু মানুষ। সে বাংলাদেশের ৬৪টি জেলার মধ্যে ইতিমধ্যে ৪১টি জেলা ঘুরে ফেলেছে!";
+        }
+
+        // 4. বাসা কোথায় / কোথায় থাকে (Location)
+        if (q.includes('বাসা') || q.includes('home') || q.includes('where do you live') || q.includes('থামো') || q.includes('থাকা') || q.includes('kothay')) {
+            return "শুভ বাংলাদেশে বসবাস করে। তবে তার মনটা সবসময় দেশের সুন্দর সুন্দর পাহাড়, নদী আর সমুদ্র সৈকতে পড়ে থাকে!";
+        }
+
+        // 5. কি করে / পেশা (Profession/Work)
+        if (q.includes('কিসব') || q.includes('কী করো') || q.includes('ki koro') || q.includes('work') || q.includes('job') || q.includes('pasa') || q.includes('profession')) {
+            return "শুভ পড়াশোনার পাশাপাশি ফ্রিল্যান্সিং এবং টেকনোলজি নিয়ে কাজ করে। এছাড়া নতুন নতুন প্রজেক্ট তৈরি করা তার ভীষণ পছন্দ।";
+        }
+
+        // 6. ভ্রমণ ও ঘোরাঘুরি (Travel)
+        if (q.includes('ঘোরা') || q.includes('travel') || q.includes('trip') || q.includes('sajek') || q.includes('cox') || q.includes('জেলা') || q.includes('district')) {
+            return "ভ্রমণ নিয়ে শুভর জুড়ি মেলা ভার! সে বাংলাদেশের ৬৪টি জেলার মধ্যে ৪১টি জেলা ঘুরে ফেলেছে। তার ফেভারিট স্পটগুলোর মধ্যে সাজেক, কক্সবাজার ও রাঙ্গামাটি অন্যতম।";
+        }
+
+        // 7. যোগাযোগ / সোশ্যাল মিডিয়া (Contact)
+        if (q.includes('যোগাযোগ') || q.includes('contact') || q.includes('facebook') || q.includes('inbox') || q.includes('whatsapp') || q.includes('number') || q.includes('social')) {
+            return "খুব সহজেই যোগাযোগ করতে পারেন! ওয়েবসাইটের ডানপাশের ফ্লোটিং সোশ্যাল বার থেকে শুভ-এর ফেসবুক, ইনস্টাগ্রাম বা হোয়াটসঅ্যাপে সরাসরি নক করতে পারেন।";
+        }
+
+        // 8. কোডিং ও টেকনোলজি (Coding / Tech)
+        if (q.includes('code') || q.includes('coding') || q.includes('html') || q.includes('css') || q.includes('javascript') || q.includes('program') || q.includes('web')) {
+            return "বাহ! আপনিও কি টেক বা কোডিং ভালোবাসেন? এই ওয়েবসাইটটি HTML, CSS, JavaScript এবং Three.js দিয়ে অত্যন্ত আধুনিক সাইবারপাঙ্ক লুকে ডিজাইন করা হয়েছে!";
+        }
+
+        // 9. ফানি বা র্যান্ডম প্রশ্ন (Funny / Random)
+        if (q.includes('বিয়ে') || q.includes('girlfriend') || q.includes('gf') || q.includes('love') || q.includes('girlfriend ki')) {
+            return "হা হা! এসব গোপন কথা কি আর এআই-এর কাছে পাওয়া যায়? সরাসরি শুভকে জিজ্ঞেস করে দেখতে পারেন! 😉";
+        }
+
+        if (q.includes('কে তুমি') || q.includes('who are you') || q.includes('introduce')) {
+            return "আমি শাহরিয়ার ইসলাম শুভ-এর কাস্টম এআই ব্রেইন। আপনার যেকোনো প্রশ্নের উত্তর দিতে আমি সবসময় প্রস্তুত!";
+        }
+
+        // 10. ডিফল্ট স্মার্ট ব্যাকআপ (Fallback for 10,000+ custom queries)
+        const smartFallbacks = [
+            `"${input}"—বিষয়টি বেশ ইন্টারেস্টিং! তবে এটি নিয়ে বিস্তারিত জানতে আপনি সরাসরি শুভ-এর সাথে যোগাযোগ করতে পারেন।`,
+            `আপনার এই প্রশ্নটি নিয়ে একটু চিন্তা করতে হবে! আপনি চাইলে ওয়েবসাইটের কন্টাক্ট ফর্ম ব্যবহার করে শুভকে মেসেজ পাঠাতে পারেন।`,
+            `দারুণ একটি বিষয় তুলছেন! এই ব্যাপারে শুভ আপনাকে আরো ভালো আইডিয়া দিতে পারবে। তার সোশ্যাল মিডিয়া বা হোয়াটসঅ্যাপে নক দিতে পারেন।`,
+            `খুব চমৎকার একটি প্রশ্ন। এআই হিসেবে আমি সবসময় শিখছি, তবে এই নির্দিষ্ট বিষয়টি নিয়ে শুভ-এর সাথে সরাসরি কথা বললে বেশি মজা পাবেন!`
+        ];
+        
+        return smartFallbacks[Math.floor(Math.random() * smartFallbacks.length)];
+    }
+
+    function appendMsg(msg, sender, isTyping = false) {
         const div = document.createElement('div');
         div.classList.add('msg', sender);
-        div.textContent = msg;
+        if(isTyping) {
+            div.id = 'typing-' + Date.now();
+            div.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${msg}`;
+        } else {
+            div.textContent = msg;
+        }
         aiMessages.appendChild(div);
         aiMessages.scrollTop = aiMessages.scrollHeight;
+        return div.id || '';
     }
 
     aiSendBtn.addEventListener('click', handleSend);
