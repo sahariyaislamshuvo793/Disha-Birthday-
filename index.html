@@ -34,7 +34,7 @@
             overflow-x: hidden;
         }
 
-        /* 🔒 AUTH MODAL / POPUP STYLES */
+        /* 🔒 0. NAME & PHONE LOGIN POPUP */
         #auth-overlay {
             position: fixed;
             top: 0;
@@ -361,37 +361,48 @@
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
         }
 
-        /* Contact Section */
-        .contact-section {
+        /* 👁️ NEW: VISITOR ANALYTICS SECTION */
+        .visitor-counter-card {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
-            padding: 45px;
+            border: 1px solid var(--primary);
+            padding: 40px 20px;
             border-radius: 25px;
             margin: 80px 0;
-            border: 1px solid var(--card-border);
+            text-align: center;
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.15);
         }
 
-        .form-group { margin-bottom: 22px; }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 16px 20px;
-            background: rgba(5, 5, 12, 0.6);
-            border: 1px solid var(--card-border);
-            color: #fff;
-            border-radius: 12px;
-            outline: none;
+        .visitor-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 25px;
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #fff;
-            border: none;
-            padding: 18px;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            width: 100%;
+        .visitor-box {
+            background: rgba(5, 5, 12, 0.7);
+            border: 1px solid var(--card-border);
+            padding: 25px 35px;
+            border-radius: 20px;
+            min-width: 200px;
+        }
+
+        .visitor-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            margin-top: 10px;
+        }
+
+        .visitor-label {
+            color: var(--text-sub);
+            font-size: 0.95rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* --- 🤖 REAL FREE AI CHATBOX STYLES --- */
@@ -538,7 +549,7 @@
     <div id="auth-overlay">
         <div class="auth-card">
             <h2 class="auth-title">WELCOME ACCESS</h2>
-            <p class="auth-subtitle"> ওয়েবসাইটে প্রবেশ করতে আপনার নাম এবং মোবাইল নম্বর দিন</p>
+            <p class="auth-subtitle">ওয়েবসাইটে প্রবেশ করতে আপনার নাম এবং মোবাইল নম্বর দিন</p>
             
             <form class="auth-form" id="auth-form">
                 <input type="text" id="auth-name" placeholder="আপনার নাম (Your Name)" required>
@@ -618,16 +629,23 @@
             <div class="place-card"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Sajek Valley"><div class="place-info">Sajek Valley</div></div>
         </div>
 
-        <!-- Contact Section -->
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-section">
-            <form id="contactForm">
-                <div class="form-group"><input type="text" placeholder="Your Name" required></div>
-                <div class="form-group"><input type="email" placeholder="Your Email Address" required></div>
-                <div class="form-group"><input type="tel" placeholder="Your WhatsApp Number" required></div>
-                <div class="form-group"><textarea rows="4" placeholder="Write your message here..." required></textarea></div>
-                <button type="submit" class="btn-submit">Send Message</button>
-            </form>
+        <!-- 👁️ VISITOR COUNTER SECTION (REPLACED MESSAGE FORM) -->
+        <h2 class="section-title">Profile Analytics</h2>
+        <div class="visitor-counter-card">
+            <i class="fas fa-chart-line" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem;">PROFILE VISIT STATS</h3>
+            <p style="color: var(--text-sub); margin-top: 5px;">আমার এই পোর্ফোলিও প্রোফাইলটি কতজন ভিজিট করেছেন তার লাইভ তথ্য</p>
+
+            <div class="visitor-grid">
+                <div class="visitor-box">
+                    <div class="visitor-label"><i class="fas fa-eye"></i> Total Views</div>
+                    <div class="visitor-number" id="totalViewsCount">...</div>
+                </div>
+                <div class="visitor-box">
+                    <div class="visitor-label"><i class="fas fa-user-check"></i> Status</div>
+                    <div class="visitor-number" style="color: #00ff88; font-size: 1.8rem; margin-top: 18px;">LIVE 🟢</div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -679,6 +697,23 @@
             alert(`স্বাগতম ${name}! ওয়েবসাইটে আপনাকে স্বাগতম।`);
             authOverlay.style.display = 'none';
         });
+
+        // 👁️ LIVE VISITOR COUNTER LOGIC
+        async function updateVisitorCount() {
+            try {
+                // Free CountAPI for live view counting
+                const res = await fetch('https://api.counterapi.dev/v1/shuvo_portfolio_2026/visits/up');
+                const data = await res.json();
+                document.getElementById('totalViewsCount').textContent = data.count;
+            } catch (err) {
+                // Fallback local storage count if offline
+                let views = parseInt(localStorage.getItem('page_views') || '120');
+                views++;
+                localStorage.setItem('page_views', views);
+                document.getElementById('totalViewsCount').textContent = views;
+            }
+        }
+        updateVisitorCount();
 
         // 1. Hide Loader
         window.addEventListener('load', () => {
@@ -736,14 +771,7 @@
             animate();
         } catch(e) {}
 
-        // 4. Contact Form Action
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('ধন্যবাদ! আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে।');
-            e.target.reset();
-        });
-
-        // 🤖 5. REAL FREE AI ENGINE LOGIC (NO API KEY NEEDED)
+        // 🤖 4. REAL FREE AI ENGINE LOGIC
         const aiToggleBtn = document.getElementById('aiToggleBtn');
         const aiChatBox = document.getElementById('aiChatBox');
         const aiCloseBtn = document.getElementById('aiCloseBtn');
