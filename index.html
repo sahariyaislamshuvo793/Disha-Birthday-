@@ -41,7 +41,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(3, 3, 8, 0.85);
+            background: rgba(3, 3, 8, 0.88);
             backdrop-filter: blur(25px);
             z-index: 100000;
             display: flex;
@@ -54,9 +54,9 @@
             background: rgba(15, 15, 30, 0.95);
             border: 1px solid var(--primary);
             border-radius: 25px;
-            padding: 40px;
+            padding: 40px 30px;
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
             text-align: center;
         }
@@ -72,14 +72,15 @@
 
         .auth-subtitle {
             color: var(--text-sub);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             margin-bottom: 25px;
+            line-height: 1.4;
         }
 
         .auth-form input {
             width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 15px;
+            padding: 15px 18px;
+            margin-bottom: 16px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--card-border);
             border-radius: 12px;
@@ -90,7 +91,7 @@
 
         .auth-form input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
         }
 
         .auth-btn {
@@ -103,21 +104,14 @@
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 5px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s ease;
         }
 
-        .auth-toggle-text {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--text-sub);
-        }
-
-        .auth-toggle-btn {
-            color: var(--primary);
-            cursor: pointer;
-            font-weight: 700;
-            text-decoration: underline;
+        .auth-btn:active {
+            transform: scale(0.98);
         }
 
         /* 3D Particle Canvas Background */
@@ -540,23 +534,17 @@
 </head>
 <body>
 
-    <!-- 🔒 0. MANDATORY LOGIN / SIGNUP POPUP -->
+    <!-- 🔒 0. NAME & PHONE LOGIN POPUP -->
     <div id="auth-overlay">
         <div class="auth-card">
-            <h2 class="auth-title" id="auth-header">ACCOUNT ACCESS</h2>
-            <p class="auth-subtitle" id="auth-sub">ওয়েবসাইটে প্রবেশ করতে প্রথমে আইডি খুলুন বা লগইন করুন</p>
+            <h2 class="auth-title">WELCOME ACCESS</h2>
+            <p class="auth-subtitle"> ওয়েবসাইটে প্রবেশ করতে আপনার নাম এবং মোবাইল নম্বর দিন</p>
             
             <form class="auth-form" id="auth-form">
-                <input type="text" id="auth-name" placeholder="আপনার পুরো নাম" style="display: none;">
-                <input type="email" id="auth-email" placeholder="ইমেইল এড্রেস" required>
-                <input type="password" id="auth-pass" placeholder="পাসওয়ার্ড" required>
-                <button type="submit" class="auth-btn" id="auth-submit-btn">লগইন করুন</button>
+                <input type="text" id="auth-name" placeholder="আপনার নাম (Your Name)" required>
+                <input type="tel" id="auth-phone" placeholder="মোবাইল নম্বর (Phone Number)" required>
+                <button type="submit" class="auth-btn">প্রবেশ করুন</button>
             </form>
-
-            <div class="auth-toggle-text">
-                <span id="toggle-text-label">নতুন অ্যাকাউন্ট চান?</span> 
-                <span class="auth-toggle-btn" id="toggle-auth-mode">সাইন-আপ করুন</span>
-            </div>
         </div>
     </div>
 
@@ -664,56 +652,31 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // 🔒 AUTH SYSTEM LOGIC
-        let isSignUp = false;
+        // 🔒 NAME & PHONE LOGIN LOGIC
         const authOverlay = document.getElementById('auth-overlay');
         const authForm = document.getElementById('auth-form');
-        const authHeader = document.getElementById('auth-header');
-        const authSub = document.getElementById('auth-sub');
-        const authName = document.getElementById('auth-name');
-        const authSubmitBtn = document.getElementById('auth-submit-btn');
-        const toggleAuthBtn = document.getElementById('toggle-auth-mode');
-        const toggleTextLabel = document.getElementById('toggle-text-label');
 
         // Check if user is already logged in
         if (localStorage.getItem('user_logged_in') === 'true') {
             authOverlay.style.display = 'none';
         }
 
-        toggleAuthBtn.addEventListener('click', () => {
-            isSignUp = !isSignUp;
-            if (isSignUp) {
-                authHeader.textContent = "CREATE ACCOUNT";
-                authSub.textContent = "ওয়েবসাইটে প্রবেশ করতে নতুন অ্যাকাউন্ট তৈরি করুন";
-                authName.style.display = 'block';
-                authSubmitBtn.textContent = "সাইন-আপ করুন";
-                toggleTextLabel.textContent = "আগে থেকেই অ্যাকাউন্ট আছে?";
-                toggleAuthBtn.textContent = "লগইন করুন";
-            } else {
-                authHeader.textContent = "ACCOUNT ACCESS";
-                authSub.textContent = "ওয়েবসাইটে প্রবেশ করতে প্রথমে আইডি খুলুন বা লগইন করুন";
-                authName.style.display = 'none';
-                authSubmitBtn.textContent = "লগইন করুন";
-                toggleTextLabel.textContent = "নতুন অ্যাকাউন্ট চান?";
-                toggleAuthBtn.textContent = "সাইন-আপ করুন";
-            }
-        });
-
         authForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
+            const name = document.getElementById('auth-name').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
 
-            if (pass.length < 6) {
-                alert('পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে!');
+            if (phone.length < 10) {
+                alert('সঠিক মোবাইল নম্বর প্রদান করুন!');
                 return;
             }
 
-            // Save state in Local Storage
+            // Save user details
             localStorage.setItem('user_logged_in', 'true');
-            localStorage.setItem('user_email', email);
+            localStorage.setItem('user_name', name);
+            localStorage.setItem('user_phone', phone);
 
-            alert(isSignUp ? 'অ্যাকোউন্ট সফলভাবে তৈরি হয়েছে!' : 'সফলভাবে লগইন হয়েছে!');
+            alert(`স্বাগতম ${name}! ওয়েবসাইটে আপনাকে স্বাগতম।`);
             authOverlay.style.display = 'none';
         });
 
@@ -801,7 +764,6 @@
             const typingId = appendMsg("ভাবছি...", 'bot', true);
 
             try {
-                // Free AI Open Public Endpoint Prompt
                 const prompt = encodeURIComponent(`You are a friendly AI on Sahariya Islam Shuvo's portfolio website. Shuvo is a student, freelancer, and traveler in Bangladesh. Respond short and smart in Bengali (or English if asked in English) to this question: ${text}`);
                 
                 const response = await fetch(`https://text.pollinations.ai/${prompt}`);
