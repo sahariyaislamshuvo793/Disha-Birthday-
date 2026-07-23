@@ -849,3 +849,335 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360 Flip Travel ID Cards</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      padding: 40px 20px;
+    }
+
+    .header-title {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #38bdf8;
+    }
+
+    /* Flex Grid Container (4/5টি কার্ড পাশাপাশি রাখার জন্য) */
+    .card-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Compact ID Card Container Size */
+    .card-container {
+      width: 220px;
+      height: 320px;
+      perspective: 1000px;
+    }
+
+    /* Inner Card Wrapper */
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+
+    /* 360 Degree Hover Rotation */
+    .card-container:hover .card {
+      transform: rotateY(360deg);
+    }
+
+    /* Face Styling */
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* FRONT SIDE DESIGN */
+    .card-front {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+    }
+
+    .card-image-wrapper {
+      width: 100%;
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card-front-info {
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
+    .place-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .place-subtitle {
+      font-size: 12px;
+      color: #38bdf8;
+    }
+
+    .flip-hint {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+
+    /* BACK SIDE DESIGN */
+    .card-back {
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      padding: 15px;
+      transform: rotateY(180deg);
+      justify-content: space-between;
+    }
+
+    .back-header {
+      border-bottom: 1px solid #38bdf8;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+
+    .back-header h4 {
+      font-size: 14px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .details-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-item {
+      text-align: left;
+    }
+
+    .detail-item label {
+      display: block;
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .detail-item span {
+      font-size: 12px;
+      color: #f1f5f9;
+      font-weight: 500;
+      line-height: 1.3;
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 class="header-title">My Travel ID Cards (360° Flip)</h2>
+
+  <div class="card-grid">
+
+    <!-- CARD 1 -->
+    <div class="card-container">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="card-image-wrapper">
+            <img src="photo1.jpg" alt="ছবি ১">
+          </div>
+          <div class="card-front-info">
+            <h3 class="place-title">সাজেক ভ্যালি</h3>
+            <p class="place-subtitle">রাঙ্গামাটি, বাংলাদেশ</p>
+            <p class="flip-hint">🔄 Hover for Details</p>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-header">
+            <h4>Location Details</h4>
+          </div>
+          <div class="details-group">
+            <div class="detail-item">
+              <label>স্থান / বিষয়</label>
+              <span>মেঘের উপত্যকা সাজেক</span>
+            </div>
+            <div class="detail-item">
+              <label>অবস্থান</label>
+              <span>বাঘাইছড়ি, রাঙ্গামাটি</span>
+            </div>
+            <div class="detail-item">
+              <label>বিবরণ</label>
+              <span>পাহাড়ের চূড়ায় মেঘের ছোঁয়া পাওয়ার অপূর্ব পর্যটন কেন্দ্র।</span>
+            </div>
+          </div>
+          <span class="badge">Travel ID #01</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="card-container">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="card-image-wrapper">
+            <img src="photo2.jpg" alt="ছবি ২">
+          </div>
+          <div class="card-front-info">
+            <h3 class="place-title">কক্সবাজার</h3>
+            <p class="place-subtitle">চট্টগ্রাম, বাংলাদেশ</p>
+            <p class="flip-hint">🔄 Hover for Details</p>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-header">
+            <h4>Location Details</h4>
+          </div>
+          <div class="details-group">
+            <div class="detail-item">
+              <label>স্থান / বিষয়</label>
+              <span>দীর্ঘতম সমুদ্র সৈকত</span>
+            </div>
+            <div class="detail-item">
+              <label>অবস্থান</label>
+              <span>কক্সবাজার সদর</span>
+            </div>
+            <div class="detail-item">
+              <label>বিবরণ</label>
+              <span>বিশ্বের দীর্ঘতম প্রাকৃতিক বালুকাময় সমুদ্র সৈকত।</span>
+            </div>
+          </div>
+          <span class="badge">Travel ID #02</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card-container">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="card-image-wrapper">
+            <img src="photo3.jpg" alt="ছবি ৩">
+          </div>
+          <div class="card-front-info">
+            <h3 class="place-title">শ্রীমঙ্গল</h3>
+            <p class="place-subtitle">মৌলভীবাজার, বাংলাদেশ</p>
+            <p class="flip-hint">🔄 Hover for Details</p>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-header">
+            <h4>Location Details</h4>
+          </div>
+          <div class="details-group">
+            <div class="detail-item">
+              <label>স্থান / বিষয়</label>
+              <span>চা বাগানের রাজধানী</span>
+            </div>
+            <div class="detail-item">
+              <label>অবস্থান</label>
+              <span>শ্রীমঙ্গল, সিলেট</span>
+            </div>
+            <div class="detail-item">
+              <label>বিবরণ</label>
+              <span>সবুজ চা বাগান এবং প্রাকৃতিক সৌন্দর্যে ভরপুর একটি স্থান।</span>
+            </div>
+          </div>
+          <span class="badge">Travel ID #03</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="card-container">
+      <div class="card">
+        <div class="card-face card-front">
+          <div class="card-image-wrapper">
+            <img src="photo4.jpg" alt="ছবি ৪">
+          </div>
+          <div class="card-front-info">
+            <h3 class="place-title">সুন্দরবন</h3>
+            <p class="place-subtitle">খুলনা, বাংলাদেশ</p>
+            <p class="flip-hint">🔄 Hover for Details</p>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-header">
+            <h4>Location Details</h4>
+          </div>
+          <div class="details-group">
+            <div class="detail-item">
+              <label>স্থান / বিষয়</label>
+              <span>ম্যানগ্রোভ বন</span>
+            </div>
+            <div class="detail-item">
+              <label>অবস্থান</label>
+              <span>দক্ষিণ-পশ্চিম উপকূল</span>
+            </div>
+            <div class="detail-item">
+              <label>বিবরণ</label>
+              <span>বিশ্বের বৃহত্তম ম্যানগ্রোভ বন ও রয়েল বেঙ্গল টাইগারের আবাস।</span>
+            </div>
+          </div>
+          <span class="badge">Travel ID #04</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
