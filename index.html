@@ -1856,3 +1856,125 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Reader Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .game-card {
+      width: 100%;
+      max-width: 380px;
+      background: #1e293b;
+      padding: 30px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .game-card h2 {
+      font-size: 22px;
+      color: #38bdf8;
+      margin-bottom: 15px;
+    }
+
+    .step-text {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    .btn {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-card">
+    <h2>🔮 মাইন্ড রিডার</h2>
+    <div class="step-text" id="stepText">
+      তুমি কি তৈরি? আমি তোমার মনের কথা বলে দেব!
+    </div>
+    <button class="btn" id="nextBtn" onclick="nextStep()">খেলা শুরু করি 🚀</button>
+  </div>
+
+  <script>
+    let currentStep = 0;
+
+    const steps = [
+      "১ থেকে ১০-এর মধ্যে যেকোনো একটি সংখ্যা মনে মনে ভাবো। 🤔",
+      "যে সংখ্যাটি ভেবেছ, সেটিকে ২ দিয়ে গুণ (Multiply) করো। ✖️",
+      "প্রাপ্ত ফলের সাথে ১০ যোগ (Add) করো। ➕",
+      "এখন পুরো ফলকে ২ দিয়ে ভাগ (Divide) করো। ➗",
+      "যে সংখ্যাটি পেয়েছ, সেখান থেকে তোমার শুরুতে ভাবা মূল সংখ্যাটি বিয়োগ (Subtract) করো। ➖",
+      "তোমার মাথার ভেতর ভালোভাবে ফোকাস করো... আমি তোমার মনের উত্তর বের করছি! 🧠✨"
+    ];
+
+    function nextStep() {
+      const stepText = document.getElementById("stepText");
+      const btn = document.getElementById("nextBtn");
+
+      if (currentStep < steps.length) {
+        stepText.innerText = steps[currentStep];
+        currentStep++;
+        
+        if (currentStep === steps.length) {
+          btn.innerText = "আমার মনের উত্তর বলো 🔮";
+        } else {
+          btn.innerText = "পরের ধাপ ➡️";
+        }
+      } else {
+        // ফলাফল প্রকাশ
+        stepText.innerHTML = "তোমার মনের বর্তমান শেষ সংখ্যাটি হলো: <br><strong style='font-size:28px; color:#38bdf8;'>৫ (5) ! 🎉</strong>";
+        btn.innerText = "আবার খেলো 🔄";
+        currentStep = 0;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
