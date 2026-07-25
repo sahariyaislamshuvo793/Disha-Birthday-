@@ -56,3 +56,151 @@ text-shadow:0 0 10px cyan;
 text-shadow:0 0 40px #ff00ff;
 }
 }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#08111f;
+color:#fff;
+overflow-x:hidden;
+}
+
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle,#00e5ff33 2px,transparent 2px);
+background-size:45px 45px;
+animation:bgMove 12s linear infinite;
+z-index:-1;
+}
+
+@keyframes bgMove{
+0%{transform:translateY(0);}
+100%{transform:translateY(45px);}
+}
+
+header{
+text-align:center;
+padding:35px 20px;
+}
+
+header h1{
+font-size:42px;
+color:#00d4ff;
+text-shadow:0 0 20px #00d4ff;
+margin-bottom:10px;
+}
+
+header p{
+color:#bdbdbd;
+font-size:18px;
+margin-bottom:25px;
+}
+
+#search{
+width:90%;
+max-width:550px;
+padding:15px;
+border-radius:40px;
+border:2px solid #00d4ff;
+background:#101b2e;
+color:white;
+font-size:18px;
+outline:none;
+}
+
+.map-box{
+position:relative;
+width:95%;
+max-width:850px;
+margin:40px auto;
+padding:20px;
+border-radius:25px;
+background:#10192b;
+box-shadow:0 0 25px #00d4ff55;
+}
+
+.map{
+width:100%;
+display:block;
+}
+
+.pin{
+position:absolute;
+width:18px;
+height:18px;
+background:#00e5ff;
+border-radius:50%;
+border:3px solid white;
+cursor:pointer;
+box-shadow:0 0 15px cyan;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.4);}
+100%{transform:scale(1);}
+}
+
+/* Pin Position */
+
+.dhaka{top:58%;left:49%;}
+.cox{top:84%;left:73%;}
+.sylhet{top:33%;left:70%;}
+.rangpur{top:18%;left:36%;}
+.rajshahi{top:38%;left:28%;}
+.khulna{top:70%;left:35%;}
+.barishal{top:68%;left:53%;}
+.chittagong{top:71%;left:66%;}
+.mymensingh{top:40%;left:53%;}
+.sundarban{top:82%;left:28%;}
+
+.popup{
+position:fixed;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:90%;
+max-width:450px;
+background:#0e1d35;
+border:2px solid #00d4ff;
+border-radius:20px;
+padding:20px;
+display:none;
+z-index:999;
+box-shadow:0 0 30px cyan;
+}
+
+.popup img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:15px;
+margin-bottom:15px;
+}
+
+.popup h2{
+color:#00e5ff;
+margin-bottom:10px;
+}
+
+.popup p{
+line-height:1.7;
+color:#ddd;
+}
+
+.close{
+position:absolute;
+right:15px;
+top:10px;
+font-size:24px;
+cursor:pointer;
+color:red;
+}
