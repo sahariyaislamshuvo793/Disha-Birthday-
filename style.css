@@ -1,0 +1,58 @@
+/* ===== Premium Loader ===== */
+#loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#050816;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+transition:1s;
+}
+
+.logo{
+font-size:40px;
+font-weight:bold;
+letter-spacing:5px;
+background:linear-gradient(90deg,#00f5ff,#8a2be2,#ff00ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:glow 2s infinite alternate;
+text-align:center;
+padding:0 20px;
+}
+
+.loading-bar{
+width:280px;
+height:8px;
+background:#222;
+border-radius:30px;
+margin-top:30px;
+overflow:hidden;
+}
+
+.loading-bar span{
+display:block;
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00f5ff,#8a2be2,#ff00ff);
+animation:loading 3s forwards;
+}
+
+@keyframes loading{
+0%{width:0%;}
+100%{width:100%;}
+}
+
+@keyframes glow{
+0%{
+text-shadow:0 0 10px cyan;
+}
+100%{
+text-shadow:0 0 40px #ff00ff;
+}
+}
