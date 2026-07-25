@@ -200,3 +200,119 @@ font-weight:bold;
 cursor:pointer;
 box-shadow:0 0 20px cyan;
 }
+
+/* ===== 3D Bangladesh Map ===== */
+
+.map-container{
+position:relative;
+width:90%;
+max-width:900px;
+margin:auto;
+padding:30px;
+border-radius:30px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(25px);
+overflow:hidden;
+transform-style:preserve-3d;
+perspective:1500px;
+animation:mapFloat 6s ease-in-out infinite;
+}
+
+.map-container::before{
+content:"";
+position:absolute;
+inset:-40%;
+background:conic-gradient(
+from 0deg,
+transparent,
+#00e5ff,
+transparent,
+#00bfff,
+transparent
+);
+animation:rotateGlow 8s linear infinite;
+filter:blur(80px);
+opacity:.6;
+z-index:0;
+}
+
+#map{
+position:relative;
+z-index:2;
+width:100%;
+filter:
+drop-shadow(0 0 20px #00e5ff)
+drop-shadow(0 0 50px #00ffff)
+drop-shadow(0 0 100px #008cff);
+transition:.5s;
+}
+
+#map:hover{
+transform:scale(1.03) rotateX(5deg) rotateY(-5deg);
+filter:
+drop-shadow(0 0 30px cyan)
+drop-shadow(0 0 70px cyan)
+drop-shadow(0 0 120px #00bfff);
+}
+
+.pin{
+z-index:5;
+width:18px;
+height:18px;
+border-radius:50%;
+background:#00ffff;
+border:3px solid white;
+box-shadow:
+0 0 15px cyan,
+0 0 40px cyan,
+0 0 80px cyan;
+animation:pinPulse 1.6s infinite;
+}
+
+.pin::after{
+content:"";
+position:absolute;
+left:50%;
+top:50%;
+width:45px;
+height:45px;
+transform:translate(-50%,-50%);
+border-radius:50%;
+border:2px solid cyan;
+animation:ring 2s infinite;
+}
+
+@keyframes mapFloat{
+0%,100%{
+transform:translateY(0px);
+}
+50%{
+transform:translateY(-10px);
+}
+}
+
+@keyframes rotateGlow{
+100%{
+transform:rotate(360deg);
+}
+}
+
+@keyframes pinPulse{
+0%,100%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.5);
+}
+}
+
+@keyframes ring{
+0%{
+transform:translate(-50%,-50%) scale(.2);
+opacity:1;
+}
+100%{
+transform:translate(-50%,-50%) scale(2);
+opacity:0;
+}
+}
