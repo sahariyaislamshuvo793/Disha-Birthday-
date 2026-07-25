@@ -1,70 +1,12 @@
-/* ===== Premium Loader ===== */
-#loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#050816;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-transition:1s;
-}
-
-.logo{
-font-size:40px;
-font-weight:bold;
-letter-spacing:5px;
-background:linear-gradient(90deg,#00f5ff,#8a2be2,#ff00ff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:glow 2s infinite alternate;
-text-align:center;
-padding:0 20px;
-}
-
-.loading-bar{
-width:280px;
-height:8px;
-background:#222;
-border-radius:30px;
-margin-top:30px;
-overflow:hidden;
-}
-
-.loading-bar span{
-display:block;
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#00f5ff,#8a2be2,#ff00ff);
-animation:loading 3s forwards;
-}
-
-@keyframes loading{
-0%{width:0%;}
-100%{width:100%;}
-}
-
-@keyframes glow{
-0%{
-text-shadow:0 0 10px cyan;
-}
-100%{
-text-shadow:0 0 40px #ff00ff;
-}
-}
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#08111f;
+background:#050b18;
 color:#fff;
 overflow-x:hidden;
 }
@@ -74,61 +16,80 @@ position:fixed;
 width:100%;
 height:100%;
 background:
-radial-gradient(circle,#00e5ff33 2px,transparent 2px);
-background-size:45px 45px;
-animation:bgMove 12s linear infinite;
+radial-gradient(circle at center,#00d4ff22,transparent 70%);
+animation:bgGlow 6s infinite alternate;
 z-index:-1;
 }
 
-@keyframes bgMove{
-0%{transform:translateY(0);}
-100%{transform:translateY(45px);}
+@keyframes bgGlow{
+from{filter:blur(20px);}
+to{filter:blur(70px);}
 }
 
 header{
 text-align:center;
-padding:35px 20px;
+padding:30px;
 }
 
 header h1{
-font-size:42px;
-color:#00d4ff;
-text-shadow:0 0 20px #00d4ff;
-margin-bottom:10px;
+font-size:45px;
+color:#00e5ff;
+text-shadow:0 0 30px cyan;
 }
 
 header p{
-color:#bdbdbd;
-font-size:18px;
-margin-bottom:25px;
+margin:10px 0 20px;
+color:#bcd;
 }
 
 #search{
 width:90%;
-max-width:550px;
+max-width:500px;
 padding:15px;
-border-radius:40px;
-border:2px solid #00d4ff;
-background:#101b2e;
-color:white;
-font-size:18px;
+border:none;
 outline:none;
+border-radius:40px;
+background:#13233d;
+color:white;
+font-size:17px;
+box-shadow:0 0 20px #00d4ff55;
 }
 
-.map-box{
+.map-section{
+display:flex;
+justify-content:center;
+padding:30px;
+}
+
+.map-container{
 position:relative;
-width:95%;
-max-width:850px;
-margin:40px auto;
+width:90%;
+max-width:900px;
 padding:20px;
 border-radius:25px;
-background:#10192b;
-box-shadow:0 0 25px #00d4ff55;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+box-shadow:
+0 0 40px cyan,
+inset 0 0 30px #00d4ff44;
 }
 
-.map{
+#map{
 width:100%;
 display:block;
+filter:
+drop-shadow(0 0 25px cyan)
+drop-shadow(0 0 60px #00d4ff);
+animation:floatMap 5s ease-in-out infinite;
+}
+
+@keyframes floatMap{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-8px);
+}
 }
 
 .pin{
@@ -139,48 +100,72 @@ background:#00e5ff;
 border-radius:50%;
 border:3px solid white;
 cursor:pointer;
-box-shadow:0 0 15px cyan;
-animation:pulse 1.5s infinite;
+box-shadow:
+0 0 15px cyan,
+0 0 35px cyan;
+animation:pulse 1.6s infinite;
+}
+
+.pin::after{
+content:'';
+position:absolute;
+width:36px;
+height:36px;
+left:-12px;
+top:-12px;
+border:2px solid cyan;
+border-radius:50%;
+animation:ring 2s infinite;
 }
 
 @keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.4);}
-100%{transform:scale(1);}
+50%{
+transform:scale(1.3);
+}
 }
 
-/* Pin Position */
+@keyframes ring{
+0%{
+transform:scale(.3);
+opacity:1;
+}
+100%{
+transform:scale(1.8);
+opacity:0;
+}
+}
 
-.dhaka{top:58%;left:49%;}
+/* Pin Positions */
+
+.dhaka{top:58%;left:50%;}
 .cox{top:84%;left:73%;}
-.sylhet{top:33%;left:70%;}
-.rangpur{top:18%;left:36%;}
-.rajshahi{top:38%;left:28%;}
-.khulna{top:70%;left:35%;}
-.barishal{top:68%;left:53%;}
-.chittagong{top:71%;left:66%;}
-.mymensingh{top:40%;left:53%;}
-.sundarban{top:82%;left:28%;}
+.sylhet{top:33%;left:69%;}
+.chattogram{top:71%;left:66%;}
+.rangpur{top:17%;left:37%;}
+.rajshahi{top:39%;left:29%;}
+.khulna{top:70%;left:34%;}
+.barishal{top:69%;left:53%;}
+.mymensingh{top:41%;left:53%;}
+.sundarbans{top:84%;left:29%;}
 
 .popup{
+display:none;
 position:fixed;
 left:50%;
 top:50%;
 transform:translate(-50%,-50%);
 width:90%;
-max-width:450px;
-background:#0e1d35;
-border:2px solid #00d4ff;
-border-radius:20px;
+max-width:420px;
+background:#102542;
 padding:20px;
-display:none;
+border-radius:20px;
+box-shadow:0 0 40px cyan;
 z-index:999;
-box-shadow:0 0 30px cyan;
 }
 
 .popup img{
 width:100%;
-height:220px;
+height:230px;
 object-fit:cover;
 border-radius:15px;
 margin-bottom:15px;
@@ -196,11 +181,22 @@ line-height:1.7;
 color:#ddd;
 }
 
-.close{
+.popup span{
 position:absolute;
 right:15px;
 top:10px;
 font-size:24px;
 cursor:pointer;
-color:red;
+}
+
+#visit{
+margin-top:15px;
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#00d4ff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 20px cyan;
 }
