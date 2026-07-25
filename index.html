@@ -1,19 +1,13 @@
-<!-- Premium Loader -->
-<div id="loader">
-    <h1 class="logo">SAHARIYA ISLAM SHUVO</h1>
-    <div class="loading-bar">
-        <span></span>
-    </div>
-</div>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Explore Bangladesh</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bangladesh Explorer</title>
 
 <link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
@@ -22,49 +16,46 @@
 
 <header>
 
-<h1>🇧🇩 Explore Bangladesh</h1>
+<h1>🇧🇩 Bangladesh Explorer</h1>
 
-<p>Click any district pin to explore.</p>
+<p>Discover Bangladesh in 3D</p>
 
 <input type="text" id="search" placeholder="Search District...">
 
 </header>
 
-<section class="map-box">
+<section class="map-section">
 
-<img src="images/bangladesh-map.png" class="map">
+<div class="map-container">
+
+<img src="assets/bangladesh-map.svg" id="map">
 
 <div class="pin dhaka" onclick="showDistrict('dhaka')"></div>
-
 <div class="pin cox" onclick="showDistrict('cox')"></div>
-
 <div class="pin sylhet" onclick="showDistrict('sylhet')"></div>
-
+<div class="pin chattogram" onclick="showDistrict('chattogram')"></div>
 <div class="pin rangpur" onclick="showDistrict('rangpur')"></div>
-
 <div class="pin rajshahi" onclick="showDistrict('rajshahi')"></div>
-
 <div class="pin khulna" onclick="showDistrict('khulna')"></div>
-
 <div class="pin barishal" onclick="showDistrict('barishal')"></div>
-
-<div class="pin chittagong" onclick="showDistrict('chittagong')"></div>
-
 <div class="pin mymensingh" onclick="showDistrict('mymensingh')"></div>
+<div class="pin sundarbans" onclick="showDistrict('sundarbans')"></div>
 
-<div class="pin sundarban" onclick="showDistrict('sundarban')"></div>
+</div>
 
 </section>
 
 <div class="popup" id="popup">
 
-<span class="close" onclick="closePopup()">✖</span>
+<span onclick="closePopup()">✖</span>
 
 <img id="photo">
 
 <h2 id="title"></h2>
 
 <p id="details"></p>
+
+<button id="visit">Explore</button>
 
 </div>
 
