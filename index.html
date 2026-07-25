@@ -1,65 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Bangladesh Explorer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Portfolio & Interactive Dashboard</title>
+  
+  <!-- CSS Styles -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
 
-<link rel="stylesheet" href="style.css">
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #1e293b;
+      --text-color: #f8fafc;
+      --accent-color: #38bdf8;
+      --border-color: rgba(56, 189, 248, 0.2);
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    /* Light Theme Toggle Class */
+    body.light-mode {
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-color: #0f172a;
+      --accent-color: #0284c7;
+      --border-color: #cbd5e1;
+    }
 
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding-bottom: 80px; /* Space for Sticky Footer */
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* --- TOP NAVBAR & SHORTCUTS --- */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 20px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: var(--accent-color);
+    }
+
+    .nav-shortcuts {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      max-width: 70%;
+    }
+
+    .nav-btn {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
+    .utility-btns {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+
+    /* --- SECTIONS COMMON STYLING --- */
+    section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h2 {
+      color: var(--accent-color);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 15px;
+    }
+
+    /* --- HERO SECTION --- */
+    #hero {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* --- GRID LAYOUT FOR SKILLS/STATS --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    /* --- SEARCH BOX --- */
+    .search-container {
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    /* --- STICKY FOOTER --- */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg"></div>
+  <!-- TOP NAVBAR & SHORTCUT MENU -->
+  <header>
+    <div class="brand">🚀 My Universe</div>
+    
+    <!-- Short-cut Buttons Menu -->
+    <nav class="nav-shortcuts">
+      <a href="#hero" class="nav-btn">3D Hero</a>
+      <a href="#about" class="nav-btn">👤 About Me</a>
+      <a href="#education" class="nav-btn">🎓 Education</a>
+      <a href="#skills" class="nav-btn">💼 Skills</a>
+      <a href="#achievements" class="nav-btn">🏆 Achievements</a>
+      <a href="#travel-map" class="nav-btn">📍 Travel Map</a>
+      <a href="#gallery" class="nav-btn">🖼️ Gallery</a>
+      <a href="#story" class="nav-btn">📖 Story</a>
+      <a href="#videos" class="nav-btn">🎥 Videos</a>
+      <a href="#widgets" class="nav-btn">🌤️ Widgets</a>
+      <a href="#guestbook" class="nav-btn">⭐ Guestbook</a>
+      <a href="#location" class="nav-btn">📍 Location</a>
+      <a href="#stats" class="nav-btn">📈 Statistics</a>
+    </nav>
 
-<header>
+    <!-- Utility Toggles -->
+    <div class="utility-btns">
+      <button class="icon-btn" onclick="toggleTheme()" title="Dark/Light Mode">🌙</button>
+      <button class="icon-btn" onclick="toggleMusic()" title="Background Music">🎵</button>
+    </div>
+  </header>
 
-<h1>🇧🇩 Bangladesh Explorer</h1>
+  <!-- SEARCH BOX -->
+  <div style="max-width: 1000px; margin: 20px auto 0; padding: 0 20px;">
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="🔍 ওয়েবসাইটে খুঁজুন (Search here)..." onkeyup="searchWebsite(this.value)">
+    </div>
+  </div>
 
-<p>Discover Bangladesh in 3D</p>
+  <!-- 1. HERO SECTION -->
+  <section id="hero">
+    <h1 class="hero-title">[তোমার নাম]</h1>
+    <p>ওয়েলকাম টু মাই ডিজিটাল ওয়ার্ল্ড | 3D Interactive Space</p>
+  </section>
 
-<input type="text" id="search" placeholder="Search District...">
+  <!-- 2. ABOUT ME -->
+  <section id="about">
+    <h2>👤 About Me</h2>
+    <div class="card">
+      <p>আমার পরিচয়, লক্ষ্য এবং ভবিষ্যৎ স্বপ্ন নিয়ে কিছু সংক্ষিপ্ত কথা...</p>
+    </div>
+  </section>
 
-</header>
+  <!-- 3. EDUCATION -->
+  <section id="education">
+    <h2>🎓 Education</h2>
+    <div class="card">
+      <h3>শিক্ষা প্রতিষ্ঠান ও ডিগ্রি</h3>
+      <p>পাশ করার সাল ও ডিগ্রি সম্পর্কিত তথ্য...</p>
+    </div>
+  </section>
 
-<section class="map-section">
+  <!-- 4. SKILLS -->
+  <section id="skills">
+    <h2>💼 Skills</h2>
+    <div class="grid">
+      <div class="card">HTML / CSS</div>
+      <div class="card">JavaScript</div>
+      <div class="card">Web Development</div>
+    </div>
+  </section>
 
-<div class="map-container">
+  <!-- 5. ACHIEVEMENTS -->
+  <section id="achievements">
+    <h2>🏆 Achievements</h2>
+    <div class="card">
+      <p>আমার জীবনের সেরা অর্জন ও পুরষ্কারসমূহ...</p>
+    </div>
+  </section>
 
-<img src="assets/bangladesh-map.svg" id="map">
+  <!-- 6. TRAVEL MAP -->
+  <section id="travel-map">
+    <h2>📍 Travel Map</h2>
+    <div class="card" style="text-align: center; padding: 40px;">
+      <p>🇧🇩 বাংলাদেশ থ্রি-ডি / ভেক্টর ম্যাপ সেকশন (সাজেক, কক্সবাজার, সিলেট পিনসহ)</p>
+    </div>
+  </section>
 
-<div class="pin dhaka" onclick="showDistrict('dhaka')"></div>
-<div class="pin cox" onclick="showDistrict('cox')"></div>
-<div class="pin sylhet" onclick="showDistrict('sylhet')"></div>
-<div class="pin chattogram" onclick="showDistrict('chattogram')"></div>
-<div class="pin rangpur" onclick="showDistrict('rangpur')"></div>
-<div class="pin rajshahi" onclick="showDistrict('rajshahi')"></div>
-<div class="pin khulna" onclick="showDistrict('khulna')"></div>
-<div class="pin barishal" onclick="showDistrict('barishal')"></div>
-<div class="pin mymensingh" onclick="showDistrict('mymensingh')"></div>
-<div class="pin sundarbans" onclick="showDistrict('sundarbans')"></div>
+  <!-- 7. GALLERY -->
+  <section id="gallery">
+    <h2>🖼️ Gallery</h2>
+    <div class="grid">
+      <div class="card">📷 ছবি ১</div>
+      <div class="card">📷 ছবি ২</div>
+      <div class="card">📷 ছবি ৩</div>
+    </div>
+  </section>
 
-</div>
+  <!-- 8. STORY / JOURNEY -->
+  <section id="story">
+    <h2>📖 Story / Journey</h2>
+    <div class="card">
+      <p>আমার জীবনের গল্প এবং সফলতার যাত্রা...</p>
+    </div>
+  </section>
 
-</section>
+  <!-- 9. VIDEOS -->
+  <section id="videos">
+    <h2>🎥 Videos</h2>
+    <div class="card">
+      <p>ইউটিউব বা কাস্টম ভিডিও এম্বেড সেকশন...</p>
+    </div>
+  </section>
 
-<div class="popup" id="popup">
+  <!-- 10, 11, 12. LIVE WIDGETS (Clock, Weather, Visitor) -->
+  <section id="widgets">
+    <h2>🌤️ Live Widgets</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>🕒 ঘড়ি ও তারিখ</h3>
+        <p id="live-clock">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>🌤️ আবহাওয়া</h3>
+        <p>ঢাকা, বাংলাদেশ: ২৬° সেলসিয়াস (সানি)</p>
+      </div>
+      <div class="card">
+        <h3>📊 লাইভ ভিজিটর</h3>
+        <p>মোট ভিজিটর: <b style="color:var(--accent-color);">১,২৪৫</b> জন</p>
+      </div>
+    </div>
+  </section>
 
-<span onclick="closePopup()">✖</span>
+  <!-- 13. GUESTBOOK -->
+  <section id="guestbook">
+    <h2>⭐ Guestbook / Comments</h2>
+    <div class="card">
+      <textarea style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px;" placeholder="আপনার মতামত লিখুন..."></textarea>
+      <button class="nav-btn" style="background:var(--accent-color); color:#fff;">কমেন্ট সাবমিট করুন</button>
+    </div>
+  </section>
 
-<img id="photo">
+  <!-- 14. DOWNLOAD CV -->
+  <section id="cv">
+    <h2>📄 Download CV</h2>
+    <div class="card" style="text-align: center;">
+      <button class="nav-btn" style="padding: 12px 24px; font-size: 1rem;" onclick="alert('CV ডাউনলোড শুরু হচ্ছে...')">📥 আমার CV ডাউনলোড করুন</button>
+    </div>
+  </section>
 
-<h2 id="title"></h2>
+  <!-- 15. LOCATION -->
+  <section id="location">
+    <h2>📍 Location (Google Map)</h2>
+    <div class="card">
+      <p>গুগল ম্যাপ এম্বেড করার জায়গা...</p>
+    </div>
+  </section>
 
-<p id="details"></p>
+  <!-- 16. WEBSITE STATISTICS -->
+  <section id="stats">
+    <h2>📈 Website Statistics</h2>
+    <div class="grid">
+      <div class="card">মোট পেজ ভিউ: ৫,০০০+</div>
+      <div class="card">সার্ভার আপটাইম: ৯৯.৯%</div>
+    </div>
+  </section>
 
-<button id="visit">Explore</button>
+  <!-- 17. BACKGROUND MUSIC (Audio Element) -->
+  <audio id="bg-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
 
-</div>
+  <!-- 18. STICKY FOOTER -->
+  <footer>
+    <div>© 2026 [তোমার নাম] | All Rights Reserved.</div>
+    <div>status: 🟢 Online</div>
+  </footer>
 
-<script src="script.js"></script>
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. Live Clock Functionality
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').innerText = now.toLocaleString('bn-BD');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
+    // 2. Dark / Light Mode Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+    }
+
+    // 3. Background Music Toggle
+    let isPlaying = false;
+    function toggleMusic() {
+      const music = document.getElementById('bg-music');
+      if (isPlaying) {
+        music.pause();
+      } else {
+        music.play();
+      }
+      isPlaying = !isPlaying;
+    }
+
+    // 4. Search Filter Functionality
+    function searchWebsite(query) {
+      const sections = document.querySelectorAll('section');
+      const term = query.toLowerCase();
+
+      sections.forEach(sec => {
+        if (sec.innerText.toLowerCase().includes(term)) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
