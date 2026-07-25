@@ -397,3 +397,247 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Interactive CV Card</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0b0f19;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* CV Card Base */
+    .cv-card {
+      background: #1e293b;
+      border: 2px solid #38bdf8;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 550px;
+      padding: 25px;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+      transition: all 0.4s ease-in-out;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cv-card:hover {
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.4);
+      transform: translateY(-3px);
+    }
+
+    /* Profile Header */
+    .cv-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      object-fit: cover;
+    }
+
+    .header-info h2 {
+      color: #38bdf8;
+      font-size: 1.5rem;
+    }
+
+    .header-info p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    /* Trigger Button */
+    .reveal-btn {
+      margin-top: 20px;
+      width: 100%;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px dashed #38bdf8;
+      color: #38bdf8;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .cv-card:hover .reveal-btn {
+      background: #38bdf8;
+      color: #0b0f19;
+    }
+
+    /* Hidden Details Container */
+    .cv-details {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.4s ease;
+    }
+
+    /* Active Class when Clicked */
+    .cv-card.active .cv-details {
+      max-height: 1000px; /* Big enough to fit content */
+      opacity: 1;
+      margin-top: 20px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      padding-top: 15px;
+    }
+
+    .cv-card.active .reveal-btn {
+      display: none; /* Hide button after expansion */
+    }
+
+    /* CV Section Item Styles */
+    .detail-section {
+      margin-bottom: 15px;
+    }
+
+    .detail-section h3 {
+      color: #f43f5e;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .detail-section ul {
+      list-style-type: none;
+      padding-left: 5px;
+    }
+
+    .detail-section li {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .detail-section li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: #38bdf8;
+    }
+
+    /* Contact Links */
+    .contact-info p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+    }
+
+    .contact-info a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- INTERACTIVE CV CARD -->
+  <div class="cv-card" id="interactiveCv" onclick="toggleCv()">
+    
+    <!-- Short Info (Always Visible) -->
+    <div class="cv-header">
+      <img src="https://picsum.photos/150" alt="Profile Picture" class="avatar">
+      <div class="header-info">
+        <h2>শাহরিয়ার ইসলাম শুভ</h2>
+        <p>🚀 Web Developer & Tech Enthusiast</p>
+        <p style="font-size: 0.8rem; color: #38bdf8; margin-top: 5px;">📍 সাভার, ঢাকা, বাংলাদেশ</p>
+      </div>
+    </div>
+
+    <div class="reveal-btn" id="btnText">
+      👇 ক্লিক করে পুরো সিভি ব্রাউজ করুন
+    </div>
+
+    <!-- Hidden Details (Shows on Click) -->
+    <div class="cv-details">
+      
+      <!-- 1. Contact Info -->
+      <div class="detail-section contact-info">
+        <h3>📞 কন্টাক্ট ইনফরমেশন</h3>
+        <p>📧 ইমেইল: <a href="mailto:sahariyaislamshuvo793@gmail.com">sahariyaislamshuvo793@gmail.com</a></p>
+        <p>🌐 ওয়েবসাইট: <a href="https://sahariyaislamshuvo793.github.io/ShuvoHub/" target="_blank">ShuvoHub</a></p>
+      </div>
+
+      <!-- 2. About / Career Objective -->
+      <div class="detail-section">
+        <h3>🎯 ক্যারিয়ার অবজেক্টিভ</h3>
+        <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.4;">
+          উদ্ভাবনী ও রেসপনসিভ ওয়েবে ডিজাইন এবং ডেভেলপমেন্টের মাধ্যমে আধুনিক ডিজিটাল অভিজ্ঞতা তৈরি করা আমার মূল লক্ষ্য। 
+        </p>
+      </div>
+
+      <!-- 3. Skills -->
+      <div class="detail-section">
+        <h3>💻 টেকনিক্যাল স্কিলস</h3>
+        <ul>
+          <li><b>Frontend:</b> HTML5, CSS3, JavaScript (ES6+), Three.js</li>
+          <li><b>Styling & UI:</b> Tailwind CSS, Responsive Web Design</li>
+          <li><b>Tools & Version Control:</b> Git, GitHub, VS Code</li>
+        </ul>
+      </div>
+
+      <!-- 4. Education -->
+      <div class="detail-section">
+        <h3>🎓 শিক্ষাগত যোগ্যতা</h3>
+        <ul>
+          <li><b>Diploma / Graduation:</b> Computer Science & Engineering</li>
+          <li><b>Passing Year:</b> Running / Completed</li>
+        </ul>
+      </div>
+
+      <!-- 5. Projects & Journey -->
+      <div class="detail-section">
+        <h3>🚀 সেরা প্রজেক্টস</h3>
+        <ul>
+          <li><b>ShuvoHub:</b> 3D Map & Zero Gravity Interactive Web Dashboard</li>
+          <li><b>Interactive CV:</b> Smooth CSS Animation & Click-to-reveal system</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <span style="font-size: 0.8rem; color: #64748b;">(পুনরায় বন্ধ করতে আবার ক্লিক করুন)</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    function toggleCv() {
+      const card = document.getElementById('interactiveCv');
+      card.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
