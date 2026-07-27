@@ -46,3 +46,14 @@ const photos = [
       "https://images.unsplash.com/photo-1492571350019-22de08371fd3?q=80&w=500&auto=format&fit=crop",
     title: "Snow monkeys, onsen",
     place: "Nagano",
+function toggleDetails(targetId, btnElement) {
+  const detailsElement = document.getElementById(targetId);
+  
+  if (detailsElement.classList.contains('show')) {
+    detailsElement.classList.remove('show');
+    btnElement.innerText = 'Show Details';
+  } else {
+    detailsElement.classList.add('show');
+    btnElement.innerText = 'Hide Details';
+  }
+}
