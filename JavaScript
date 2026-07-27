@@ -50,3 +50,14 @@ cvvInput.addEventListener('input', function () {
   document.getElementById('cvvDisplay').textContent =
     '*'.repeat(val.length) || '***';
 });
+function toggleDetails(targetId, btnElement) {
+  const detailsElement = document.getElementById(targetId);
+  
+  if (detailsElement.classList.contains('show')) {
+    detailsElement.classList.remove('show');
+    btnElement.innerText = 'Show Details';
+  } else {
+    detailsElement.classList.add('show');
+    btnElement.innerText = 'Hide Details';
+  }
+}
