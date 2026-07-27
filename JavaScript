@@ -8,3 +8,45 @@ document.getElementById("loader").style.display="none";
 },3000);
 });
 </script>
+// Card Number — format into four groups, update four spans
+document.getElementById('cardNumber').addEventListener('input', function () {
+  const val = this.value.replace(/\D/g, '').slice(0, 16);
+
+  // Re-format input field with spaces
+  this.value = val.replace(/(.{4})/g, '$1 ').trim();
+
+  // Update each span with actual digits or # placeholders
+  const raw = [val.slice(0,4), val.slice(4,8), val.slice(8,12), val.slice(12,16)];
+  ['g1','g2','g3','g4'].forEach((id, i) => {
+    document.getElementById(id).textContent = raw[i].padEnd(4, '#');
+  });
+});
+
+// Card Holder — uppercase mirror
+document.getElementById('cardHolder').addEventListener('input', function () {
+  document.getElementById('holderDisplay').textContent =
+    this.value.toUpperCase() || 'FULL NAME';
+});
+
+// Expiry — read both selects, combine
+function updateExpiry() {
+  const m = document.getElementById('expMonth').value;
+  const y = document.getElementById('expYear').value;
+  document.getElementById('expiryDisplay').textContent =
+    (m || 'MM') + '/' + (y || 'YY');
+}
+document.getElementById('expMonth').addEventListener('change', updateExpiry);
+document.getElementById('expYear').addEventListener('change', updateExpiry);
+
+// CVV — flip card on focus, restore on blur, mask digits
+const cvvInput = document.getElementById('cvv');
+const cardInner = document.getElementById('cardInner');
+
+cvvInput.addEventListener('focus', () => cardInner.classList.add('flipped'));
+cvvInput.addEventListener('blur',  () => cardInner.classList.remove('flipped'));
+cvvInput.addEventListener('input', function () {
+  const val = this.value.replace(/\D/g, '').slice(0, 4);
+  this.value = val;
+  document.getElementById('cvvDisplay').textContent =
+    '*'.repeat(val.length) || '***';
+});
