@@ -609,32 +609,47 @@
 </html>
 
 
-:root {
-  /* palette */
-  --color-bg:           #0f0f13;
-  --color-card-from:    #1a1a2e;
-  --color-card-mid:     #16213e;
-  --color-card-to:      #0f3460;
-  --color-accent:       #a855f7;
-  --color-accent-deep:  #7c3aed;
-  --color-pink:         #ec4899;
-  --color-blue:         #3b82f6;
-  --color-text:         rgba(255, 255, 255, 0.9);
-  --color-text-muted:   rgba(255, 255, 255, 0.5);
-  --color-form-bg:      rgba(255, 255, 255, 0.04);
-  --color-input-bg:     rgba(255, 255, 255, 0.06);
-  --color-border:       rgba(255, 255, 255, 0.08);
-  --color-border-input: rgba(255, 255, 255, 0.1);
 
-  /* geometry */
-  --card-width:         380px;
-  --card-height:        240px;
-  --card-radius:        20px;
-  --perspective:        1000px;
+<div class="wrapper">
 
-  /* motion */
-  --duration-flip:      0.7s;
-  --easing-flip:        cubic-bezier(0.4, 0, 0.2, 1);
-  --duration-aurora:    8s;
-  --duration-blob:      12s;
-}
+  <!-- 3-D card scene -->
+  <div class="card-scene">
+    <div class="card-inner" id="cardInner">
+
+      <div class="card-front">
+        <div class="card-top">...</div>
+        <div class="card-number-display" id="cardNumDisplay">
+          <span id="g1">####</span>
+          <span id="g2">####</span>
+          <span id="g3">####</span>
+          <span id="g4">####</span>
+        </div>
+        <div class="card-bottom">
+          <div class="card-info-value" id="holderDisplay">FULL NAME</div>
+          <div class="card-info-value" id="expiryDisplay">MM/YY</div>
+        </div>
+      </div>
+
+      <div class="card-back">
+        <div class="magnetic-stripe"></div>
+        <div class="cvv-section">
+          <div class="cvv-band">
+            <span class="cvv-dots" id="cvvDisplay">***</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Form panel -->
+  <div class="form-card">
+    <input id="cardNumber" type="text" autocomplete="off" />
+    <input id="cardHolder" type="text" autocomplete="off" />
+    <select id="expMonth">...</select>
+    <select id="expYear">...</select>
+    <input id="cvv" type="password" autocomplete="off" />
+    <button>Pay Now</button>
+  </div>
+
+</div>
