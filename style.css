@@ -246,3 +246,13 @@ input:focus, select:focus {
   background: rgba(236, 72, 153, 0.08);
   box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
 }
+.swiper {
+  width: 100%;
+  height: 250px; /* আপনার প্রয়োজন অনুযায়ী সাইজ কম-বেশি করতে পারেন */
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ছবি যেন ফেটে বা চ্যাপ্টা হয়ে না যায় */
+}
