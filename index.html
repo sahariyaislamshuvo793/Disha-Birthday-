@@ -239,3 +239,371 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Feed & Reels</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* মোবাইল ফ্রেম / অ্যাপ কন্টেইনার */
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      background-color: #0f0f0f;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #222;
+    }
+
+    /* টপ নেভিগেশন বার (Tabs) */
+    .top-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding-bottom: 4px;
+      transition: 0.3s;
+    }
+
+    .nav-btn.active {
+      color: #fff;
+      border-bottom: 2px solid #00f2fe;
+    }
+
+    /* ভিউ এরিয়া */
+    .view-section {
+      width: 100%;
+      height: 100%;
+      display: none;
+      overflow-y: auto;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    /* --- ১. ফেসবুক পোস্ট ফিড স্টাইল --- */
+    .feed-container {
+      padding-top: 60px;
+      padding-bottom: 20px;
+    }
+
+    .post-card {
+      background-color: #18191a;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #444;
+    }
+
+    .user-info h4 {
+      font-size: 0.95rem;
+    }
+
+    .user-info span {
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    .post-caption {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .post-media {
+      width: 100%;
+      border-radius: 6px;
+      max-height: 350px;
+      object-fit: cover;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #333;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    /* --- ২. রিলস স্ক্রল স্টাইল --- */
+    .reels-container {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory; /* টিকটকের মতো স্মুথ স্ন্যাপ স্ক্রল */
+    }
+
+    .reel-item {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      scroll-snap-align: start;
+      background-color: #000;
+    }
+
+    .reel-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .reel-overlay {
+      position: absolute;
+      bottom: 20px;
+      left: 15px;
+      right: 70px;
+      z-index: 10;
+    }
+
+    .reel-overlay h3 {
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .reel-overlay p {
+      font-size: 0.85rem;
+      color: #ddd;
+    }
+
+    /* রিলস ডানপাশের অ্যাকশন বাটন */
+    .reel-sidebar {
+      position: absolute;
+      right: 15px;
+      bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .side-btn {
+      background: rgba(0,0,0,0.4);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .side-btn span {
+      font-size: 0.75rem;
+      display: block;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- টপ ট্যাব (ফিড এবং রিলস এর মধ্যে সুইচ করার জন্য) -->
+    <div class="top-nav">
+      <button class="nav-btn active" onclick="switchTab('feed')">Posts</button>
+      <button class="nav-btn" onclick="switchTab('reels')">Reels</button>
+    </div>
+
+    <!-- ১. পোস্ট ফিড ಸೆಕ್ಷನ್ -->
+    <div id="feed-view" class="view-section active">
+      <div class="feed-container">
+        
+        <!-- পোস্ট ১ -->
+        <div class="post-card">
+          <div class="post-header">
+            <img src="https://picsum.photos/100" class="user-avatar" alt="User">
+            <div class="user-info">
+              <h4>Mama Developer</h4>
+              <span>2 hours ago</span>
+            </div>
+          </div>
+          <p class="post-caption">আজকের নতুন প্রজেক্টের কাজ শেষ করলাম! কেমন হয়েছে সবাই জানাবেন। 🚀</p>
+          <img src="https://picsum.photos/500/350" class="post-media" alt="Post Image">
+          <div class="post-actions">
+            <button class="action-btn">❤️ Like</button>
+            <button class="action-btn">💬 Comment</button>
+            <button class="action-btn">↗️ Share</button>
+          </div>
+        </div>
+
+        <!-- পোস্ট ২ -->
+        <div class="post-card">
+          <div class="post-header">
+            <img src="https://picsum.photos/101" class="user-avatar" alt="User">
+            <div class="user-info">
+              <h4>Tech World</h4>
+              <span>5 hours ago</span>
+            </div>
+          </div>
+          <p class="post-caption">নতুন ওয়েব টেকনোলজি দিয়ে খুব চমৎকার সব ইউআই (UI) তৈরি করা সম্ভব। 🔥</p>
+          <img src="https://picsum.photos/500/351" class="post-media" alt="Post Image">
+          <div class="post-actions">
+            <button class="action-btn">❤️ Like</button>
+            <button class="action-btn">💬 Comment</button>
+            <button class="action-btn">↗️ Share</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ২. রিলস ಸೆಕ್ಷನ್ (টিকটক/ফেসবুক রিলস স্টাইল) -->
+    <div id="reels-view" class="view-section">
+      <div class="reels-container" id="reelsContainer">
+        
+        <!-- রিলস ১ -->
+        <div class="reel-item">
+          <!-- ডেমো ভিডিও (আপনি আপনার ভিডিও লিঙ্ক বসাবেন) -->
+          <video class="reel-video" src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" loop playsinline onclick="togglePlay(this)"></video>
+          
+          <div class="reel-overlay">
+            <h3>@nature_lover</h3>
+            <p>প্রকৃতির সুন্দর একটি দৃশ্য 🌿✨ #reels #nature</p>
+          </div>
+
+          <div class="reel-sidebar">
+            <button class="side-btn">❤️</button>
+            <button class="side-btn">💬</button>
+            <button class="side-btn">↗️</button>
+          </div>
+        </div>
+
+        <!-- রিলস ২ -->
+        <div class="reel-item">
+          <video class="reel-video" src="https://assets.mixkit.co/videos/preview/mixkit-vertical-shot-of-a-waterfall-in-a-forest-42898-large.mp4" loop playsinline onclick="togglePlay(this)"></video>
+          
+          <div class="reel-overlay">
+            <h3>@travel_vlog</h3>
+            <p>ঝরনার পানির শব্দ মন শান্ত করে দেয়! 😍💧</p>
+          </div>
+
+          <div class="reel-sidebar">
+            <button class="side-btn">❤️</button>
+            <button class="side-btn">💬</button>
+            <button class="side-btn">↗️</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ট্যাব পরিবর্তন করার লজিক
+    function switchTab(tabName) {
+      const feedView = document.getElementById('feed-view');
+      const reelsView = document.getElementById('reels-view');
+      const buttons = document.querySelectorAll('.nav-btn');
+
+      if (tabName === 'feed') {
+        feedView.classList.add('active');
+        reelsView.classList.remove('active');
+        buttons[0].classList.add('active');
+        buttons[1].classList.remove('active');
+        pauseAllVideos(); // রিলস বন্ধ হবে
+      } else {
+        reelsView.classList.add('active');
+        feedView.classList.remove('active');
+        buttons[1].classList.add('active');
+        buttons[0].classList.remove('active');
+        playVisibleVideo(); // প্রথম রিলস অটো প্লে হবে
+      }
+    }
+
+    // ভিডিওতে ক্লিক করলে প্লে/পজ হওয়া
+    function togglePlay(video) {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+
+    function pauseAllVideos() {
+      const videos = document.querySelectorAll('.reel-video');
+      videos.forEach(video => video.pause());
+    }
+
+    // স্ক্রল করার সময় যে ভিডিও সামনে আসবে শুধু সেটাই অটো-প্লে হওয়ার লজিক
+    const reelsContainer = document.getElementById('reelsContainer');
+    const videos = document.querySelectorAll('.reel-video');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.play();
+        } else {
+          entry.target.pause();
+        }
+      });
+    }, { threshold: 0.6 });
+
+    videos.forEach(video => observer.observe(video));
+  </script>
+</body>
+</html>
