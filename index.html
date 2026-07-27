@@ -1,3 +1,34 @@
+<!-- Swiper CSS (Head ট্যাগের ভেতরে রাখবেন) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Banner Slider Structure -->
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="banner1.jpg" alt="Offer 1"></div>
+    <div class="swiper-slide"><img src="banner2.jpg" alt="Offer 2"></div>
+    <div class="swiper-slide"><img src="banner3.jpg" alt="Offer 3"></div>
+  </div>
+  <!-- Pagination (বিন্দুগুলো নিচে দেখানোর জন্য) -->
+  <div class="swiper-pagination"></div>
+</div>
+
+<!-- Swiper JS (Body ট্যাগের একদম নিচে রাখবেন) -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Swiper Initialization JavaScript -->
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    loop: true, // একটার পর একটা ঘুরতেই থাকবে
+    autoplay: {
+      delay: 3000, // ৩ সেকেন্ড পর পর ছবি পরিবর্তন হবে
+      disableOnInteraction: false, // ইউজার ড্রাগ করলেও অটো-প্লে বন্ধ হবে না
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
