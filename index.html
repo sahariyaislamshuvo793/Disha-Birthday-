@@ -1,1 +1,318 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultra Unique Circular Orb Gallery</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;500&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #030508;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* সাইবার স্পেস ক্যানভাস ব্যাকগ্রাউন্ড */
+    #space-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      letter-spacing: 6px;
+      background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.4) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      color: #64748b;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    /* ৩ডি স্পেস অ্যান্ড গ্যালাক্সি ওরিয়েন্টেশন */
+    .galaxy-container {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .orb-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ফ্লুয়িড অরবিট মোশন নোড */
+    .orb-card {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: #000;
+      overflow: hidden;
+    }
+
+    .orb-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(40%) contrast(110%);
+      transition: filter 0.5s ease, transform 0.5s ease;
+      border-radius: 50%;
+    }
+
+    /* সেন্ট্রাল কন্টেইনার ফোকাস */
+    .orb-card.active {
+      width: 320px;
+      height: 320px;
+      border-radius: 24px;
+      z-index: 10 !important;
+      transform: translate(0, 0) scale(1) !important;
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 50px rgba(124, 58, 237, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .orb-card.active img {
+      filter: grayscale(0%) contrast(100%);
+      border-radius: 20px;
+      transform: scale(1.05);
+    }
+
+    /* কার্ড ওভারলে ইনফো */
+    .orb-info {
+      position: absolute;
+      bottom: 0;
+      inset-x: 0;
+      padding: 20px;
+      background: linear-gradient(0deg, rgba(3, 5, 8, 0.95) 0%, transparent 100%);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease 0.2s;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+
+    .orb-card.active .orb-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .orb-info h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .orb-info p {
+      font-size: 0.8rem;
+      color: #a7f3d0;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* হভার রোটেশন ইফেক্ট */
+    .orb-card:not(.active):hover {
+      border-color: rgba(167, 243, 208, 0.8);
+      box-shadow: 0 0 35px rgba(167, 243, 208, 0.4);
+      filter: brightness(1.2);
+    }
+
+    /* কন্ট্রোল ইনস্ট্রাকশন */
+    .instruction {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 30px;
+      font-size: 0.85rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="space-bg"></canvas>
+
+  <div class="header">
+    <h1>Cosmic Orb Gallery</h1>
+    <p>অরবিট সিলেক্ট করে গ্যালারি ইন্টারেকশন ট্রাই করুন</p>
+  </div>
+
+  <div class="galaxy-container">
+    <div class="orb-wrapper" id="orbWrapper">
+      
+      <div class="orb-card active" data-index="0">
+        <img src="https://picsum.photos/800/800?random=100" alt="Orb 1">
+        <div class="orb-info">
+          <h3>NEBULA VIBE</h3>
+          <p>COLLECTION #01</p>
+        </div>
+      </div>
+
+      <div class="orb-card" data-index="1">
+        <img src="https://picsum.photos/800/800?random=101" alt="Orb 2">
+        <div class="orb-info">
+          <h3>CYBER ECLIPSE</h3>
+          <p>COLLECTION #02</p>
+        </div>
+      </div>
+
+      <div class="orb-card" data-index="2">
+        <img src="https://picsum.photos/800/800?random=102" alt="Orb 3">
+        <div class="orb-info">
+          <h3>SOLAR SHADOW</h3>
+          <p>COLLECTION #03</p>
+        </div>
+      </div>
+
+      <div class="orb-card" data-index="3">
+        <img src="https://picsum.photos/800/800?random=103" alt="Orb 4">
+        <div class="orb-info">
+          <h3>QUANTUM REALM</h3>
+          <p>COLLECTION #04</p>
+        </div>
+      </div>
+
+      <div class="orb-card" data-index="4">
+        <img src="https://picsum.photos/800/800?random=104" alt="Orb 5">
+        <div class="orb-info">
+          <h3>AURORA SPECTRUM</h3>
+          <p>COLLECTION #05</p>
+        </div>
+      </div>
+
+      <div class="orb-card" data-index="5">
+        <img src="https://picsum.photos/800/800?random=105" alt="Orb 6">
+        <div class="orb-info">
+          <h3>DARK VOID</h3>
+          <p>COLLECTION #06</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="instruction">যেকোনো সার্কেলে ক্লিক করলে সেটি সেন্টারে ট্রান্সফর্ম হবে</div>
+
+  <script>
+    /* ব্যাকগ্রাউন্ড ক্যানভাস মোশন স্টারস */
+    const canvas = document.getElementById('space-bg');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const stars = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 1.5,
+      alpha: Math.random(),
+      speed: Math.random() * 0.02
+    }));
+
+    function drawBackground() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(drawBackground);
+    }
+    drawBackground();
+
+    /* অরবিটাল পজিশনিং অ্যান্ড সার্কুলার রোটেশন লজিক */
+    const cards = document.querySelectorAll('.orb-card');
+    const totalCards = cards.length;
+    const radiusX = 360; // চওড়া অরবিট রিডিয়াস
+    const radiusY = 160; // চ্যাপ্টা অরবিট রিডিয়াস
+
+    function layoutOrbs() {
+      const activeCard = document.querySelector('.orb-card.active');
+      const activeIdx = parseInt(activeCard.getAttribute('data-index'));
+
+      let otherIndex = 0;
+      cards.forEach((card) => {
+        const idx = parseInt(card.getAttribute('data-index'));
+
+        if (idx === activeIdx) {
+          card.style.zIndex = 10;
+        } else {
+          // অ্যাক্টিভ কার্ড বাদে বাকিগুলোকে বৃত্তাকারে পজিশন দেওয়া
+          const angle = ((otherIndex) / (totalCards - 1)) * Math.PI * 2;
+          const x = Math.cos(angle) * radiusX;
+          const y = Math.sin(angle) * radiusY;
+          const scale = 0.6 + (y + radiusY) / (2 * radiusY) * 0.4; // ৩ডি ডেপথ স্কেলিং
+
+          card.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+          card.style.zIndex = Math.floor(scale * 5);
+          otherIndex++;
+        }
+      });
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        layoutOrbs();
+      });
+    });
+
+    // প্রাথমিক লেআউট রান
+    layoutOrbs();
+  </script>
+</body>
+        </html>
