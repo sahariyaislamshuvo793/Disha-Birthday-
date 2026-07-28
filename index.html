@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seamless Horizontal Carousel Gallery</title>
+  <title>Ultra Unique Horizontal Gallery</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
     * {
       box-sizing: border-box;
@@ -14,222 +14,301 @@
     }
 
     body {
-      background-color: #05070a;
+      background-color: #030508;
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
+      user-select: none;
     }
 
-    /* গ্যালারি কন্টেইনার */
-    .carousel-container {
+    /* ফুল উইডথ গ্যালারি র‍্যাপার */
+    .gallery-wrapper {
       position: relative;
       width: 100vw;
-      height: 550px;
+      height: 600px;
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
+      cursor: grab;
     }
 
-    /* ট্র্যাক যেখানে সব ছবি গায়ে গায়ে লেগে থাকবে */
-    .carousel-track {
+    .gallery-wrapper:active {
+      cursor: grabbing;
+    }
+
+    /* স্লাইডার ট্র্যাকিং কন্টেইনার */
+    .gallery-track {
       display: flex;
+      align-items: center;
       height: 100%;
-      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform;
     }
 
-    /* প্রতিটি ছবির বক্স (কোন গ্যাপ থাকবে না) */
-    .gallery-item {
+    /* প্রতিটি ছবির স্লাইড কার্ড (একটির সাথে আরেকটি সম্পূর্ণ গায়ে গায়ে লাগানো) */
+    .gallery-card {
       position: relative;
-      flex: 0 0 160px; /* ডিফল্ট অবস্থায় পাশের ছবিগুলো ছোট থাকবে */
+      flex: 0 0 160px; /* ডিফল্ট অবস্থায় সাইডের ছবিগুলো ছোট থাকবে */
       height: 100%;
-      cursor: pointer;
       overflow: hidden;
-      transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
-      filter: brightness(40%) grayscale(30%);
-      border-right: 1px solid rgba(255, 255, 255, 0.15); /* বর্ডার দিয়ে ছবিগুলোকে আলাদা চেনা যাবে */
+      transition: flex 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, border-color 0.8s ease;
+      filter: brightness(35%) grayscale(40%);
+      border-right: 1px solid rgba(255, 255, 255, 0.12); /* একদম সূক্ষ্ম সেপারেটর */
     }
 
-    .gallery-item img {
+    .gallery-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       pointer-events: none;
     }
 
-    /* টেক্সটের ওপর হালকা শ্যাডো */
-    .overlay {
+    /* গ্রেডিয়েন্ট ওভারলে টেক্সট স্পষ্ট দেখার জন্য */
+    .card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.85) 100%);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.9) 100%);
+      pointer-events: none;
     }
 
-    /* জায়গার নাম */
-    .location-name {
+    /* ছবির ওপর নাম এবং ডেসক্রিপশন/বর্ণনা */
+    .card-content {
       position: absolute;
-      bottom: 30px;
-      left: 30px;
+      bottom: 40px;
+      left: 40px;
+      right: 40px;
       color: #ffffff;
-      font-size: 1.4rem;
-      font-weight: 700;
-      white-space: nowrap;
-      opacity: 0.5;
-      transform: translateY(10px);
-      transition: all 0.5s ease;
-      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-    }
-
-    /* অ্যাক্টিভ ছবি (যেটি সেন্টারে থাকবে ও বড় হবে) */
-    .gallery-item.active {
-      flex: 0 0 650px; /* অ্যাক্টিভ ছবিটা বড় হয়ে অনেকটা জায়গা নিবে */
-      filter: brightness(100%) grayscale(0%);
       z-index: 2;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
     }
 
-    .gallery-item.active .location-name {
+    .location-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .location-desc {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #94a3b8;
+      max-width: 500px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+    }
+
+    /* অ্যাক্টিভ সেন্টার্ড স্টেট (যেটি বড় হবে ও হাইলাইট হবে) */
+    .gallery-card.active {
+      flex: 0 0 680px; /* অ্যাক্টিভ ছবিটা বড় হয়ে অনেকটা জায়গা নেবে */
+      filter: brightness(100%) grayscale(0%);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .gallery-card.active .card-content {
       opacity: 1;
       transform: translateY(0);
-      font-size: 2.2rem;
+      transition-delay: 0.2s; /* বড় হওয়ার পর টেক্সট ভেসে উঠবে */
     }
 
-    /* এরো নেভিগেশন বাটন */
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      color: #fff;
-      font-size: 1.5rem;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .prev-btn { left: 30px; }
-    .next-btn { right: 30px; }
-
-    /* রেসপন্সিভ এডজাস্টমেন্ট */
+    /* রেসপন্সিভ মোবাইল এডজাস্টমেন্ট */
     @media (max-width: 768px) {
-      .carousel-container { height: 420px; }
-      .gallery-item { flex: 0 0 80px; }
-      .gallery-item.active { flex: 0 0 280px; }
-      .gallery-item.active .location-name { font-size: 1.4rem; }
+      .gallery-wrapper { height: 480px; }
+      .gallery-card { flex: 0 0 70px; }
+      .gallery-card.active { flex: 0 0 300px; }
+      .card-content { bottom: 20px; left: 20px; right: 20px; }
+      .location-title { font-size: 1.5rem; }
+      .location-desc { font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="carousel-container">
-    <button class="nav-btn prev-btn" onclick="moveSlide(-1)">&#10094;</button>
-    <button class="nav-btn next-btn" onclick="moveSlide(1)">&#10095;</button>
+  <div class="gallery-wrapper" id="wrapper">
+    <div class="gallery-track" id="track">
 
-    <div class="carousel-track" id="track">
-      
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=1" alt="Sajek Valley">
-        <div class="overlay"></div>
-        <div class="location-name">Sajek Valley</div>
+      <!-- স্লাইড ১ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=10" alt="Sajek Valley">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Sajek Valley</h2>
+          <p class="location-desc">মেঘের উপত্যকা সাজেক রাঙ্গামাটি জেলায় অবস্থিত। পাহাড় আর মেঘের অনন্য সৌন্দর্য দেখতে হাজারো পর্যটক প্রতিদিন এখানে আসেন।</p>
+        </div>
       </div>
 
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=2" alt="Cox's Bazar">
-        <div class="overlay"></div>
-        <div class="location-name">Cox's Bazar</div>
+      <!-- স্লাইড ২ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=11" alt="Cox's Bazar">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Cox's Bazar</h2>
+          <p class="location-desc">বিশ্বের দীর্ঘতম প্রাকৃতিক বালুকাময় সমুদ্র সৈকত। বিশাল সমুদ্রের ঢেউ এবং সূর্যাস্তের অপরূপ দৃশ্য এই জায়গার মূল আকর্ষণ।</p>
+        </div>
       </div>
 
-      <div class="gallery-item active">
-        <img src="https://picsum.photos/1000/800?random=3" alt="Ratargul, Sylhet">
-        <div class="overlay"></div>
-        <div class="location-name">Ratargul, Sylhet</div>
+      <!-- স্লাইড ৩ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=12" alt="Ratargul Swamp Forest">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Ratargul Swamp Forest</h2>
+          <p class="location-desc">বাংলাদেশের একমাত্র স্বাদু পানির জলাবন যা সিলেটে অবস্থিত। বর্ষাকালে নৌকায় করে বনের ভেতর ঘুরে বেড়ানোর অনুভূতি অসাধারণ।</p>
+        </div>
       </div>
 
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=4" alt="Saint Martin">
-        <div class="overlay"></div>
-        <div class="location-name">Saint Martin</div>
+      <!-- স্লাইড ৪ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=13" alt="Saint Martin's Island">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Saint Martin's Island</h2>
+          <p class="location-desc">বাংলাদেশের একমাত্র প্রবাল দ্বীপ। স্বচ্ছ নীল পানি, নারকেল বাগান এবং শান্ত পরিবেশ নিয়ে এটি এক স্বর্গীয় স্থান।</p>
+        </div>
       </div>
 
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=5" alt="Bandarban">
-        <div class="overlay"></div>
-        <div class="location-name">Bandarban</div>
+      <!-- স্লাইড ৫ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=14" alt="Bandarban">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Bandarban</h2>
+          <p class="location-desc">উঁচু পর্বত, ঝরনা এবং আদিবাসী সংস্কৃতির অপূর্ব মিলনমেলা। নীলগিরি ও বগা লেকের প্রাকৃতিক রূপ চোখ জুড়িয়ে দেয়।</p>
+        </div>
       </div>
 
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=6" alt="Sreemangal">
-        <div class="overlay"></div>
-        <div class="location-name">Sreemangal</div>
-      </div>
-
-      <div class="gallery-item">
-        <img src="https://picsum.photos/1000/800?random=7" alt="Sundarbans">
-        <div class="overlay"></div>
-        <div class="location-name">Sundarbans</div>
+      <!-- স্লাইড ৬ -->
+      <div class="gallery-card">
+        <img src="https://picsum.photos/1200/900?random=15" alt="Sreemangal">
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <h2 class="location-title">Sreemangal</h2>
+          <p class="location-desc">চা এর রাজধানী হিসেবে পরিচিত শ্রীমঙ্গল। চারপাশে বিস্তৃত সবুজ চা বাগান, লাউয়াছড়া জাতীয় উদ্যান ও ঠান্ডা আবহাওয়া এর বিশেষত্ব।</p>
+        </div>
       </div>
 
     </div>
   </div>
 
   <script>
+    const wrapper = document.getElementById('wrapper');
     const track = document.getElementById('track');
-    const items = document.querySelectorAll('.gallery-item');
-    let currentIndex = 2; // ডিফল্টভাবে ৩ নম্বর ছবি সেন্টারে থাকবে
+    const cards = document.querySelectorAll('.gallery-card');
+    
+    let currentIndex = 0;
+    let autoSlideTimer = null;
 
+    // ১. ক্যারাউজেল পজিশনিং লজিক
     function updateCarousel() {
-      items.forEach((item, index) => {
-        item.classList.remove('active');
+      cards.forEach((card, index) => {
+        card.classList.remove('active');
         if (index === currentIndex) {
-          item.classList.add('active');
+          card.classList.add('active');
         }
       });
 
-      // সেন্টারে অ্যাক্টিভ ছবিটাকে রাখার জন্য ক্যালকুলেশন
-      const activeItem = items[currentIndex];
-      const containerWidth = document.querySelector('.carousel-container').offsetWidth;
+      const activeCard = cards[currentIndex];
+      const wrapperWidth = wrapper.offsetWidth;
       
       let offsetLeft = 0;
       for (let i = 0; i < currentIndex; i++) {
-        offsetLeft += items[i].offsetWidth;
+        offsetLeft += cards[i].offsetWidth;
       }
-      
-      const centerPos = offsetLeft - (containerWidth / 2) + (activeItem.offsetWidth / 2);
-      track.style.transform = `translateX(${-centerPos}px)`;
+
+      // সেন্টারে অ্যাক্টিভ ছবিকে নিখুঁতভাবে বসানোর ক্যালকুলেশন
+      const centerPosition = offsetLeft - (wrapperWidth / 2) + (activeCard.offsetWidth / 2);
+      track.style.transform = `translateX(${-centerPosition}px)`;
     }
 
-    function moveSlide(direction) {
-      currentIndex += direction;
-      if (currentIndex < 0) currentIndex = 0;
-      if (currentIndex >= items.length) currentIndex = items.length - 1;
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % cards.length;
       updateCarousel();
     }
 
-    // ছবিতে সরাসরি ক্লিক করলেও সেন্টারে আসবে
-    items.forEach((item, index) => {
-      item.addEventListener('click', () => {
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      updateCarousel();
+    }
+
+    // ২. অটো ৫ সেকেন্ড পর পর স্লাইড হওয়ার টাইমার
+    function startAutoSlide() {
+      stopAutoSlide();
+      autoSlideTimer = setInterval(nextSlide, 5000); // ৫০০০ মি.সে. = ৫ সেকেন্ড
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideTimer) clearInterval(autoSlideTimer);
+    }
+
+    // ৩. ড্র্যাগ / সাইড সোয়াইপ (টান দেওয়ার) ইন্টারঅ্যাকশন
+    let startX = 0;
+    let isDragging = false;
+    let currentTranslate = 0;
+
+    // মাউস এবং টাচ ইভেন্ট
+    wrapper.addEventListener('mousedown', dragStart);
+    wrapper.addEventListener('touchstart', dragStart);
+
+    wrapper.addEventListener('mousemove', dragMove);
+    wrapper.addEventListener('touchmove', dragMove);
+
+    wrapper.addEventListener('mouseup', dragEnd);
+    wrapper.addEventListener('mouseleave', dragEnd);
+    wrapper.addEventListener('touchend', dragEnd);
+
+    function dragStart(e) {
+      stopAutoSlide(); // ইউজার টান দিলে অটো স্লাইড সাময়িক বন্ধ হবে
+      isDragging = true;
+      startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    }
+
+    function dragMove(e) {
+      if (!isDragging) return;
+      // ড্র্যাগিং মোশনে কোনো ডিরেকশন ট্র্যাকিং
+    }
+
+    function dragEnd(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      const endX = e.type.includes('mouse') ? e.clientX : (e.changedTouches ? e.changedTouches[0].clientX : startX);
+      const diffX = startX - endX;
+
+      // যদি ৫০ পিক্সেলের বেশি ডানে বা বামে টান দেওয়া হয়
+      if (diffX > 50) {
+        nextSlide();
+      } else if (diffX < -50) {
+        prevSlide();
+      }
+
+      startAutoSlide(); // ড্র্যাগ শেষ হলে আবার ৫ সেকেন্ডের অটো স্লাইডার চালু হবে
+    }
+
+    // ৪. সরাসরি যেকোনো ছবিতে ক্লিক করলেও সেটাসেন্টারে আসবে
+    cards.forEach((card, index) => {
+      card.addEventListener('click', () => {
         currentIndex = index;
         updateCarousel();
+        startAutoSlide();
       });
     });
 
-    // পেজ লোড হওয়ার সাথে সাথে পজিশন সেটআপ
-    window.addEventListener('load', updateCarousel);
+    // প্রথমবার লোড ও উইন্ডো রিজাইজের জন্য রান
+    window.addEventListener('load', () => {
+      updateCarousel();
+      startAutoSlide();
+    });
+
     window.addEventListener('resize', updateCarousel);
   </script>
 
