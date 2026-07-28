@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Image Slider with Overlay Text</title>
+  <title>Peek-a-Boo Touch Slider</title>
   <style>
     * {
       box-sizing: border-box;
@@ -17,112 +17,123 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-color: #f0f2f5;
+      background-color: #121212;
+      overflow: hidden;
     }
 
-    /* মূল স্লাইডার ফ্রেম */
+    /* মূল কন্টেইনার */
     .slider-container {
-      width: 90%;
-      max-width: 600px;
-      height: 380px;
-      overflow: hidden; /* মূল ফ্রেমের বাইরের ৪টি ছবি লুকিয়ে রাখবে */
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      position: relative;
+      width: 100%;
+      max-width: 800px;
+      padding: 20px 0;
+      overflow: hidden; /* বাইরের অংশ হাইড রাখবে */
+      cursor: grab;
+      user-select: none;
     }
 
-    /* ছবিগুলোর ট্র্যাক */
+    .slider-container:active {
+      cursor: grabbing;
+    }
+
+    /* স্লাইডের ট্র্যাক */
     .slider-track {
       display: flex;
-      width: 500%; /* ৫টি ছবির জন্য */
-      height: 100%;
-      transition: transform 0.8s ease-in-out;
+      gap: 15px; /* ছবিগুলোর মাঝখানের ফাঁকা জায়গা */
+      /* সাইডে পরবর্তী ছবি উঁকি দেওয়ার জন্য বামে একটু প্যাডিং */
+      padding-left: 10%; 
+      transition: transform 0.4s ease-out;
+      will-change: transform;
     }
 
-    /* প্রতিটি ছবির আইটেম কন্টেইনার */
+    /* প্রতিটি ছবির কার্ড */
     .slide {
-      width: 20%;
-      height: 100%;
-      position: relative; /* লেখার পজিশন ঠিক রাখার জন্য */
+      /* স্ক্রিনের ৮০% জায়গা নেবে, যেন পাশে পরের ছবি ১০% দেখা যায় */
+      flex: 0 0 80%; 
+      height: 450px;
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
 
     .slide img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      pointer-events: none; /* ড্র্যাগ করার সুবিধার জন্য */
     }
 
-    /* ছবির ওপর লেখার স্টাইল */
+    /* ছবির ওপরের লেখা */
     .caption-box {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 20px;
-      /* লেখার পেছনের ব্যাকগ্রাউন্ড আবছা কালো করা হলো যেন লেখা স্পষ্ট পড়া যায় */
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      padding: 25px 20px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
       color: #ffffff;
+      pointer-events: none;
     }
 
     .caption-box h3 {
-      font-size: 20px;
-      margin-bottom: 6px;
+      font-size: 22px;
+      margin-bottom: 8px;
     }
 
     .caption-box p {
       font-size: 14px;
-      line-height: 1.4;
       opacity: 0.9;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
 
-  <div class="slider-container">
+  <div class="slider-container" id="sliderContainer">
     <div class="slider-track" id="sliderTrack">
       
-      <!-- ১ নম্বর ছবি ও তার ডিটেইলস -->
+      <!-- ১ নম্বর ছবি -->
       <div class="slide">
-        <img src="https://picsum.photos/600/380?random=1" alt="Image 1">
+        <img src="https://picsum.photos/800/600?random=1" alt="Image 1">
         <div class="caption-box">
-          <h3>প্রথম ছবির শিরোনাম</h3>
-          <p>এখানে প্রথম ছবি সম্পর্কে বিস্তারিত বিবরণ বা ক্যাপশন লিখুন।</p>
+          <h3>প্রথম ছবির ক্যাপশন</h3>
+          <p>এখানে প্রথম ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
         </div>
       </div>
 
-      <!-- ২ নম্বর ছবি ও তার ডিটেইলস -->
+      <!-- ২ নম্বর ছবি -->
       <div class="slide">
-        <img src="https://picsum.photos/600/380?random=2" alt="Image 2">
+        <img src="https://picsum.photos/800/600?random=2" alt="Image 2">
         <div class="caption-box">
-          <h3>দ্বিতীয় ছবির শিরোনাম</h3>
-          <p>এখানে দ্বিতীয় ছবির বিস্তারিত তথ্য যোগ করতে পারেন।</p>
+          <h3>দ্বিতীয় ছবির ক্যাপশন</h3>
+          <p>এখানে দ্বিতীয় ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
         </div>
       </div>
 
-      <!-- ৩ নম্বর ছবি ও তার ডিটেইলস -->
+      <!-- ৩ নম্বর ছবি -->
       <div class="slide">
-        <img src="https://picsum.photos/600/380?random=3" alt="Image 3">
+        <img src="https://picsum.photos/800/600?random=3" alt="Image 3">
         <div class="caption-box">
-          <h3>তৃতীয় ছবির শিরোনাম</h3>
-          <p>এখানে আপনার পছন্দমতো যেকোনো ডিটেইলস লিখে দিন।</p>
+          <h3>তৃতীয় ছবির ক্যাপশন</h3>
+          <p>এখানে তৃতীয় ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
         </div>
       </div>
 
-      <!-- ৪ নম্বর ছবি ও তার ডিটেইলস -->
+      <!-- ৪ নম্বর ছবি -->
       <div class="slide">
-        <img src="https://picsum.photos/600/380?random=4" alt="Image 4">
+        <img src="https://picsum.photos/800/600?random=4" alt="Image 4">
         <div class="caption-box">
-          <h3>চতুর্থ ছবির শিরোনাম</h3>
-          <p>এখানে চতুর্থ ছবি সংক্রান্ত যেকোনো তথ্য রাখতে পারেন।</p>
+          <h3>চতুর্থ ছবির ক্যাপশন</h3>
+          <p>এখানে চতুর্থ ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
         </div>
       </div>
 
-      <!-- ৫ নম্বর ছবি ও তার ডিটেইলস -->
+      <!-- ৫ নম্বর ছবি -->
       <div class="slide">
-        <img src="https://picsum.photos/600/380?random=5" alt="Image 5">
+        <img src="https://picsum.photos/800/600?random=5" alt="Image 5">
         <div class="caption-box">
-          <h3>পঞ্চম ছবির শিরোনাম</h3>
-          <p>এখানে পঞ্চম ছবির বিবরণ যোগ করুন।</p>
+          <h3>পঞ্চম ছবির ক্যাপশন</h3>
+          <p>এখানে পঞ্চম ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
         </div>
       </div>
 
@@ -130,20 +141,96 @@
   </div>
 
   <script>
+    const container = document.getElementById('sliderContainer');
     const track = document.getElementById('sliderTrack');
-    const totalImages = 5;
+    const slides = document.querySelectorAll('.slide');
+
     let currentIndex = 0;
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = 0;
+    let autoSlideTimer;
 
-    // প্রতি ৫ সেকেন্ড পর পর অটোমেটিক পরিবর্তন হবে
-    setInterval(() => {
-      currentIndex++;
+    // মাউস এবং টাচ ইভেন্ট সেটআপ
+    container.addEventListener('mousedown', touchStart);
+    container.addEventListener('mousemove', touchMove);
+    container.addEventListener('mouseup', touchEnd);
+    container.addEventListener('mouseleave', touchEnd);
 
-      if (currentIndex >= totalImages) {
-        currentIndex = 0;
+    container.addEventListener('touchstart', touchStart);
+    container.addEventListener('touchmove', touchMove);
+    container.addEventListener('touchend', touchEnd);
+
+    // অটো স্লাইডার চালু (প্রতি ৫ সেকেন্ডে)
+    startAutoSlide();
+
+    function startAutoSlide() {
+      autoSlideTimer = setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        setPositionByIndex();
+      }, 5000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(autoSlideTimer);
+      startAutoSlide();
+    }
+
+    function touchStart(e) {
+      isDragging = true;
+      startPos = getPositionX(e);
+      animationID = requestAnimationFrame(animation);
+      track.style.transition = 'none'; // ড্র্যাগ করার সময় ইনস্ট্যান্ট রেসপন্স
+      clearInterval(autoSlideTimer); // টান দেওয়ার সময় অটো-স্লাইড বন্ধ থাকবে
+    }
+
+    function touchMove(e) {
+      if (!isDragging) return;
+      const currentPosition = getPositionX(e);
+      currentTranslate = prevTranslate + currentPosition - startPos;
+    }
+
+    function touchEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      cancelAnimationFrame(animationID);
+
+      const movedBy = currentTranslate - prevTranslate;
+
+      // নির্দিষ্ট পরিমাণ টান দিলে পরের/আগের ছবিতে যাবে
+      if (movedBy < -50 && currentIndex < slides.length - 1) {
+        currentIndex += 1;
+      }
+      if (movedBy > 50 && currentIndex > 0) {
+        currentIndex -= 1;
       }
 
-      track.style.transform = `translateX(-${currentIndex * 20}%)`;
-    }, 5000);
+      setPositionByIndex();
+      resetAutoSlide(); // আবার অটো-স্লাইড শুরু হবে
+    }
+
+    function getPositionX(e) {
+      return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    }
+
+    function animation() {
+      setSliderPosition();
+      if (isDragging) requestAnimationFrame(animation);
+    }
+
+    function setSliderPosition() {
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    }
+
+    function setPositionByIndex() {
+      const slideWidth = slides[0].clientWidth + 15; // ৮/২০ গ্যাপ সহ পজিশন
+      currentTranslate = currentIndex * -slideWidth;
+      prevTranslate = currentTranslate;
+      track.style.transition = 'transform 0.4s ease-out';
+      setSliderPosition();
+    }
   </script>
 
 </body>
