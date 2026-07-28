@@ -136,7 +136,7 @@
         .glass-card:hover { transform: translateY(-5px); }
 
         /* Layout Structure */
-        section { padding: 80px 8% 40px; }
+        section { padding: 90px 8% 40px; }
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 40px; color: var(--accent-color); }
 
         /* Hero Section */
@@ -153,9 +153,9 @@
         .hero-text span { color: var(--accent-color); }
         .hero-text p { font-size: 1.2rem; margin: 15px 0; opacity: 0.8; }
 
-        .btn-group { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
         .btn {
-            padding: 12px 25px;
+            padding: 12px 22px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
@@ -165,6 +165,7 @@
             transition: 0.3s;
             border: none;
             cursor: pointer;
+            font-size: 0.95rem;
         }
 
         .btn-primary { background: var(--accent-color); color: #fff; }
@@ -172,12 +173,14 @@
         
         .btn-facebook { background: #1877f2; color: #fff; }
         .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+        .btn-cv { background: #10b981; color: #fff; }
 
+        /* Lamba / Vertical Profile Image */
         .profile-img-container {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            padding: 8px;
+            width: 280px;
+            height: 380px;
+            border-radius: 20px;
+            padding: 6px;
             background: linear-gradient(45deg, var(--accent-color), transparent);
             box-shadow: 0 0 30px var(--accent-glow);
         }
@@ -186,7 +189,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 50%;
+            border-radius: 16px;
         }
 
         /* Widgets (Live Weather & Clock) */
@@ -202,8 +205,15 @@
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
 
-        /* Floating Actions (WhatsApp & Messenger) */
-        .floating-action {
+        /* Left and Right Floating Actions */
+        .floating-left {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+        }
+
+        .floating-right {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -231,22 +241,32 @@
         .float-wa { background: #25d366; }
         .float-msg { background: #0084ff; }
 
-        /* Map & Travel Section */
-        .map-box {
-            height: 300px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
+        /* Company Logos Section */
+        .company-logos {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .company-box {
+            width: 130px;
+            height: 60px;
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px dashed var(--accent-color);
+            font-size: 0.8rem;
+            opacity: 0.6;
+            background: rgba(255,255,255,0.02);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero { text-align: center; justify-content: center; }
             .hero-text h1 { font-size: 2.2rem; }
-            .profile-img-container { width: 220px; height: 220px; }
+            .profile-img-container { width: 240px; height: 320px; margin: 0 auto; }
             .btn-group { justify-content: center; }
         }
     </style>
@@ -269,19 +289,21 @@
             <div class="search-box">
                 <input type="text" placeholder="Search section...">
             </div>
-            <div class="theme-toggle" id="themeToggle"><i class="fas font-moon">🌙</i></div>
+            <div class="theme-toggle" id="themeToggle">🌙</div>
         </div>
     </nav>
 
-    <!-- Floating Contact Buttons -->
-    <div class="floating-action">
-        <!-- WhatsApp direct chat -->
-        <a href="https://wa.me/8801791996607" target="_blank" class="float-btn float-wa" title="WhatsApp Us">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-        <!-- Facebook Messenger direct chat -->
-        <a href="https://m.me/19AgNREPQj" target="_blank" class="float-btn float-msg" title="Send Messenger Message">
+    <!-- Left Floating Action (Messenger) -->
+    <div class="floating-left">
+        <a href="https://m.me/19AgNREPQj" target="_blank" class="float-btn float-msg" title="Messenger Chat">
             <i class="fab fa-facebook-messenger"></i>
+        </a>
+    </div>
+
+    <!-- Right Floating Action (WhatsApp) -->
+    <div class="floating-right">
+        <a href="https://wa.me/8801791996607" target="_blank" class="float-btn float-wa" title="WhatsApp Chat">
+            <i class="fab fa-whatsapp"></i>
         </a>
     </div>
 
@@ -294,19 +316,24 @@
             </div>
             <h1>Hi, I'm <br><span>Sahariya Islam Shuvo</span></h1>
             <p>Creative Developer & Passionate Traveler</p>
+            
             <div class="btn-group">
-                <a href="#contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Contact Me</a>
                 <a href="https://www.facebook.com/share/19AgNREPQj/" target="_blank" class="btn btn-facebook">
                     <i class="fab fa-facebook-f"></i> Facebook
                 </a>
-                <a href="https://www.instagram.com/sahariyashuvo_?igsh=MWRoNjNhdnlhOTg2YQ==" target="_blank" class="btn btn-instagram">
+                <a href="https://www.instagram.com/sahariyashuvo_?igsh=MWRoNjNhdnlhOTg2YQ== " target="_blank" class="btn btn-instagram">
                     <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <!-- Download CV Button -->
+                <a href="#cv" class="btn btn-cv" onclick="alert('Downloading CV...');">
+                    <i class="fas fa-download"></i> Download CV
                 </a>
             </div>
         </div>
+        <!-- Lamba/Vertical Profile Photo Container -->
         <div class="profile-img-container">
-            <!-- Replace with your Profile Photo URL -->
-            <img src="https://via.placeholder.com/300" alt="Sahariya Islam Shuvo">
+            <!-- Replace with your vertical/portrait photo link -->
+            <img src="https://via.placeholder.com/300x400" alt="Sahariya Islam Shuvo">
         </div>
     </section>
 
@@ -315,6 +342,20 @@
         <h2 class="section-title">About Me</h2>
         <div class="glass-card">
             <p>আমি সাহারিয়া ইসলাম শুভ। টেকনোলজি এবং ট্র্যাভেলিং দুটোই আমার ভীষণ প্রিয়। সুন্দর ইন্টারফেস ডেভেলপ করা এবং বাংলাদেশের আনাচে-কানাচে ঘুরে বেড়ানো আমার জীবনের অন্যতম অংশ। লক্ষ্য হলো সেরা ডিজিটাল এক্সপেরিয়েন্স তৈরি করা এবং নিজের স্কিল দিয়ে নতুন কিছু সৃষ্টি করা।</p>
+        </div>
+    </section>
+
+    <!-- Companies I Worked With (Logo Placeholders) -->
+    <section id="companies">
+        <h2 class="section-title">Companies I Worked With</h2>
+        <div class="glass-card">
+            <p style="text-align: center; margin-bottom: 10px; opacity: 0.8;">যেসব কোম্পানির সাথে কাজ করেছি:</p>
+            <div class="company-logos">
+                <div class="company-box">Logo 1</div>
+                <div class="company-box">Logo 2</div>
+                <div class="company-box">Logo 3</div>
+                <div class="company-box">Logo 4</div>
+            </div>
         </div>
     </section>
 
@@ -344,38 +385,6 @@
         </div>
     </section>
 
-    <!-- Interactive Travel Map Section -->
-    <section id="travel-map">
-        <h2 class="section-title">3D Bangladesh Travel Tracker</h2>
-        <div class="glass-card">
-            <div class="map-box">
-                <p><i class="fas fa-map-marked-alt fa-2x"></i><br>Interactive 3D Glow Map ( Clickable Pins )</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section id="stats">
-        <div class="grid-3" style="text-align: center;">
-            <div class="glass-card"><h2>15+</h2><p>Projects Done</p></div>
-            <div class="glass-card"><h2>25+</h2><p>Districts Visited</p></div>
-            <div class="glass-card"><h2 id="visitorCount">1,240</h2><p>Site Visitors</p></div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
-            <form onsubmit="event.preventDefault(); alert('Message Sent Successfully!');">
-                <input type="text" placeholder="Your Name" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-color);" required>
-                <input type="email" placeholder="Your Email" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-color);" required>
-                <textarea placeholder="Your Message" rows="5" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-color);" required></textarea>
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer style="text-align: center; padding: 30px; border-top: 1px solid var(--border-color); opacity: 0.8;">
         <p>&copy; 2026 Sahariya Islam Shuvo. All Rights Reserved.</p>
@@ -389,7 +398,7 @@
             setTimeout(() => {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-            }, 2000); // 2 Seconds display
+            }, 1800);
         });
 
         // Glow Effect Logic
