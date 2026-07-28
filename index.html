@@ -3,834 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instagram Style Slider</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: #000000;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* পোস্ট কন্টেইনার */
-    .post-card {
-      width: 100%;
-      max-width: 470px; /* ইনস্টাগ্রাম পোস্টের স্ট্যান্ডার্ড সাইজ */
-      background-color: #000000;
-      border: 1px solid #262626;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    /* ১. হেডার অংশ (প্রোফাইল, নাম, লোকেশন) */
-    .post-header {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-    }
-
-    .profile-pic {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 12px;
-    }
-
-    .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .username-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .username {
-      font-weight: 600;
-      font-size: 14px;
-      color: #fff;
-    }
-
-    .verified-badge {
-      width: 14px;
-      height: 14px;
-      fill: #0095f6;
-    }
-
-    .location {
-      font-size: 12px;
-      color: #a8a8a8;
-      margin-top: 2px;
-    }
-
-    /* ২. ইমেজ স্লাইডার অংশ */
-    .slider-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .slider-wrapper:active {
-      cursor: grabbing;
-    }
-
-    /* পিকচার কাউন্টার (যেমন: 1/5) */
-    .image-counter {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(38, 38, 38, 0.75);
-      color: #f5f5f5;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      z-index: 10;
-      font-weight: 500;
-    }
-
-    .slider-track {
-      display: flex;
-      transition: transform 0.3s ease-out;
-      will-change: transform;
-    }
-
-    .slide {
-      flex: 0 0 100%;
-      aspect-ratio: 4 / 5; /* ইনস্টাগ্রাম পোর্ট্রেট রেশিও */
-      background-color: #121212;
-    }
-
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-    }
-
-    /* ৩. ফুটার ডট (Indicators) */
-    .post-footer {
-      padding: 12px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .dots-container {
-      display: flex;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: #555555;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .dot.active {
-      background-color: #0095f6;
-      transform: scale(1.2);
-    }
-  </style>
-</head>
-<body>
-
-  <div class="post-card">
-    
-    <!-- হেডার (প্রোফাইল পিক, নাম ও লোকেশন) -->
-    <div class="post-header">
-      <img src="https://picsum.photos/100/100?random=99" alt="Profile" class="profile-pic">
-      <div class="user-info">
-        <div class="username-row">
-          <span class="username">heroemaniaco</span>
-          <!-- ভেরিফাইড ব্যাজ -->
-          <svg class="verified-badge" viewBox="0 0 24 24">
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6.2 12.8l1.4-1.4 2.5 2.5 6.1-6.1 1.4 1.4-7.5 7.5z"/>
-          </svg>
-        </div>
-        <span class="location">Madrid, Spain</span>
-      </div>
-    </div>
-
-    <!-- ছবি ও টান দেওয়ার স্লাইডার এলাকা -->
-    <div class="slider-wrapper" id="sliderWrapper">
-      <!-- ছবি গণনার সংখ্যা (1/5) -->
-      <div class="image-counter" id="imageCounter">1/5</div>
-
-      <div class="slider-track" id="sliderTrack">
-        <div class="slide"><img src="https://picsum.photos/600/750?random=1" alt="Post 1"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=2" alt="Post 2"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=3" alt="Post 3"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=4" alt="Post 4"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=5" alt="Post 5"></div>
-      </div>
-    </div>
-
-    <!-- নিচের ডট ইন্ডিকেটর -->
-    <div class="post-footer">
-      <div class="dots-container" id="dotsContainer"></div>
-    </div>
-
-  </div>
-
-  <script>
-    const wrapper = document.getElementById('sliderWrapper');
-    const track = document.getElementById('sliderTrack');
-    const slides = document.querySelectorAll('.slide');
-    const counter = document.getElementById('imageCounter');
-    const dotsContainer = document.getElementById('dotsContainer');
-
-    let currentIndex = 0;
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = 0;
-
-    // ১. ডট ইন্ডিকেটর তৈরি
-    slides.forEach((_, index) => {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      if (index === 0) dot.classList.add('active');
-      dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll('.dot');
-
-    // ২. ইভেন্ট লিসেনার (টান দেওয়া এবং সোয়াইপ করার জন্য)
-    wrapper.addEventListener('touchstart', touchStart);
-    wrapper.addEventListener('touchmove', touchMove);
-    wrapper.addEventListener('touchend', touchEnd);
-
-    wrapper.addEventListener('mousedown', touchStart);
-    wrapper.addEventListener('mousemove', touchMove);
-    wrapper.addEventListener('mouseup', touchEnd);
-    wrapper.addEventListener('mouseleave', touchEnd);
-
-    function touchStart(e) {
-      isDragging = true;
-      startPos = getPositionX(e);
-      animationID = requestAnimationFrame(animation);
-      track.style.transition = 'none';
-    }
-
-    function touchMove(e) {
-      if (!isDragging) return;
-      const currentPosition = getPositionX(e);
-      currentTranslate = prevTranslate + currentPosition - startPos;
-    }
-
-    function touchEnd() {
-      if (!isDragging) return;
-      isDragging = false;
-      cancelAnimationFrame(animationID);
-
-      const movedBy = currentTranslate - prevTranslate;
-
-      // ছবি স্লাইড করার থ্রেশহোল্ড
-      if (movedBy < -50 && currentIndex < slides.length - 1) {
-        currentIndex += 1;
-      }
-      if (movedBy > 50 && currentIndex > 0) {
-        currentIndex -= 1;
-      }
-
-      updateSlider();
-    }
-
-    function getPositionX(e) {
-      return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-    }
-
-    function animation() {
-      track.style.transform = `translateX(${currentTranslate}px)`;
-      if (isDragging) requestAnimationFrame(animation);
-    }
-
-    function updateSlider() {
-      currentTranslate = currentIndex * -wrapper.clientWidth;
-      prevTranslate = currentTranslate;
-      track.style.transition = 'transform 0.3s ease-out';
-      track.style.transform = `translateX(${currentTranslate}px)`;
-
-      // কাউন্টার টেক্সট আপডেট (যেমন: 2/5)
-      counter.textContent = `${currentIndex + 1}/${slides.length}`;
-
-      // ডট আপডেট
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-      });
-    }
-  </script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>মামা ছবির ফাইল গ্যালারি</title>
-  <style>
-    /* ১. বেসিক পেজ স্টাইল */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    h1 {
-      color: #333;
-      margin-bottom: 30px;
-    }
-
-    /* ২. ছবির "ফাইল" বা কন্টেইনার স্টাইল */
-    /* এখানে আপনার সব ছবি একসাথে জমা থাকবে */
-    .file-gallery-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-
-    /* ৩. পোলারয়েড (Polaroid) স্টাইল */
-    .polaroid {
-      background: #fff;
-      padding: 10px;
-      padding-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    /* ছবিতে হভার করলে একটু বড় হবে */
-    .polaroid:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
-
-    .polaroid img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover; /* ছবি যেন ফেটে না যায় বা টেনে বড় না হয় */
-      border: 1px solid #ddd;
-    }
-
-    /* ৪. লাইটবক্স (মডাল) স্টাইল - ছবি বড় হয়ে দেখার জন্য */
-    .lightbox {
-      display: none; /* ডিফল্টভাবে লুকানো থাকবে */
-      position: fixed;
-      z-index: 1000;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.9); /* পেছনের ব্যাকগ্রাউন্ড কালো হবে */
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* লাইটবক্স যখন অ্যাক্টিভ হবে তখন ছবি দেখাবে */
-    .lightbox.active {
-      display: flex;
-    }
-
-    /* বড় ছবি */
-    .lightbox-content {
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 5px;
-      border: 5px solid #fff;
-      box-shadow: 0 0 20px rgba(255,255,255,0.3);
-    }
-
-    /* ক্লোজ বাটন স্টাইল */
-    .close-lightbox {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: #fff;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>মামা, আপনার ছবির ফাইল গ্যালারি</h1>
-
-  <!-- ছবি জমা রাখার ফাইল -->
-  <div class="file-gallery-container">
-    
-    <!-- ছবি ১ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=1" alt="ছবি ১">
-    </div>
-
-    <!-- ছবি ২ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=2" alt="ছবি ২">
-    </div>
-
-    <!-- ছবি ৩ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=3" alt="ছবি ৩">
-    </div>
-
-    <!-- ছবি ৪ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=4" alt="ছবি ৪">
-    </div>
-
-    <!-- ছবি ৫ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=5" alt="ছবি ৫">
-    </div>
-
-    <!-- ছবি ৬ -->
-    <div class="polaroid" onclick="openLightbox(this)">
-      <img src="https://picsum.photos/400/500?random=6" alt="ছবি ৬">
-    </div>
-  </div>
-
-  <!-- বড় ছবি দেখার লাইটবক্স -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <span class="close-lightbox" onclick="closeLightbox(event, true)">&times;</span>
-    <img class="lightbox-content" id="lightbox-img" src="" alt="বড় ছবি">
-  </div>
-
-  <!-- JavaScript - ছবি খোলা ও বন্ধ করার লজিক -->
-  <script>
-    // লাইটবক্স খোলার ফাংশন
-    function openLightbox(element) {
-      // যে পোলারয়েডে ক্লিক করা হয়েছে, তার ভেতরের ছবির 'src' নেওয়া হচ্ছে
-      const imgSrc = element.querySelector('img').src;
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-
-      // লাইটবক্সের ছবির 'src' সেট করা হচ্ছে
-      lightboxImg.src = imgSrc;
-      // লাইটবক্স চালু করা হচ্ছে
-      lightbox.classList.add('active');
-    }
-
-    // লাইটবক্স বন্ধ করার ফাংশন
-    function closeLightbox(event, forceClose = false) {
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-
-      // যদি ক্লোজ বাটনে ক্লিক করা হয় অথবা বড় ছবির বাইরে কালো জায়গায় ক্লিক করা হয়
-      if (forceClose || event.target === lightbox) {
-        // লাইটবক্স বন্ধ করা হচ্ছে
-        lightbox.classList.remove('active');
-        // ছবি বন্ধ করার পর পরেরবার যেন আগের ছবি না দেখা যায়, তাই 'src' খালি করা হচ্ছে
-        lightboxImg.src = '';
-      }
-    }
-  </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Instagram Style Interactive Gallery</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: #000000;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* মূল পোস্ট কার্ড */
-    .post-card {
-      width: 100%;
-      max-width: 470px;
-      background-color: #000000;
-      border: 1px solid #262626;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.8);
-    }
-
-    /* ১. হেডার (প্রোফাইল নাম ও ইনফো) */
-    .post-header {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      background-color: #000;
-    }
-
-    .profile-pic {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 12px;
-    }
-
-    .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .username-row {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .username {
-      font-weight: 600;
-      font-size: 14px;
-      color: #fff;
-    }
-
-    .verified-badge {
-      width: 14px;
-      height: 14px;
-      fill: #0095f6;
-    }
-
-    .location {
-      font-size: 12px;
-      color: #a8a8a8;
-      margin-top: 2px;
-    }
-
-    /* ২. স্লাইডার এলাকা (টান দেওয়ার জায়গা) */
-    .slider-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .slider-wrapper:active {
-      cursor: grabbing;
-    }
-
-    /* ইমেজ কাউন্টার (1/5) */
-    .image-counter {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(38, 38, 38, 0.75);
-      color: #f5f5f5;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      z-index: 10;
-      font-weight: 500;
-    }
-
-    .slider-track {
-      display: flex;
-      transition: transform 0.3s ease-out;
-      will-change: transform;
-    }
-
-    .slide {
-      flex: 0 0 100%;
-      aspect-ratio: 4 / 5;
-      background-color: #121212;
-      position: relative;
-    }
-
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: pointer;
-    }
-
-    /* ৩. ফুটার ইন্ডিকেটর ডট */
-    .post-footer {
-      padding: 12px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #000;
-    }
-
-    .dots-container {
-      display: flex;
-      gap: 6px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: #555555;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      cursor: pointer;
-    }
-
-    .dot.active {
-      background-color: #0095f6;
-      transform: scale(1.3);
-    }
-
-    /* ৪. ফুল স্ক্রিন লাইটবক্স (ক্লিক করলে বড় ছবি দেখার জন্য) */
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.95);
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.2s ease-in-out;
-    }
-
-    .lightbox.active {
-      display: flex;
-    }
-
-    .lightbox-img {
-      max-width: 90%;
-      max-height: 85%;
-      border-radius: 8px;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
-      object-fit: contain;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 25px;
-      color: #fff;
-      font-size: 35px;
-      font-weight: bold;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- কার্ড শুরু -->
-  <div class="post-card">
-    
-    <!-- ১. প্রোফাইল হেডার -->
-    <div class="post-header">
-      <img src="https://picsum.photos/100/100?random=99" alt="Profile" class="profile-pic">
-      <div class="user-info">
-        <div class="username-row">
-          <span class="username">heroemaniaco</span>
-          <svg class="verified-badge" viewBox="0 0 24 24">
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6.2 12.8l1.4-1.4 2.5 2.5 6.1-6.1 1.4 1.4-7.5 7.5z"/>
-          </svg>
-        </div>
-        <span class="location">Madrid, Spain</span>
-      </div>
-    </div>
-
-    <!-- ২. স্লাইডার এলাকা -->
-    <div class="slider-wrapper" id="sliderWrapper">
-      <div class="image-counter" id="imageCounter">1/5</div>
-
-      <div class="slider-track" id="sliderTrack">
-        <div class="slide"><img src="https://picsum.photos/600/750?random=1" alt="Post 1"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=2" alt="Post 2"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=3" alt="Post 3"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=4" alt="Post 4"></div>
-        <div class="slide"><img src="https://picsum.photos/600/750?random=5" alt="Post 5"></div>
-      </div>
-    </div>
-
-    <!-- ৩. ফুটার ডট -->
-    <div class="post-footer">
-      <div class="dots-container" id="dotsContainer"></div>
-    </div>
-
-  </div>
-
-  <!-- ৪. ফুল স্ক্রিন পপ-আপ (ক্লিক করলে বড় ছবি দেখাবে) -->
-  <div class="lightbox" id="lightbox">
-    <span class="close-btn" id="closeBtn">&times;</span>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Zoomed Image">
-  </div>
-
-  <script>
-    const wrapper = document.getElementById('sliderWrapper');
-    const track = document.getElementById('sliderTrack');
-    const slides = document.querySelectorAll('.slide');
-    const images = document.querySelectorAll('.slide img');
-    const counter = document.getElementById('imageCounter');
-    const dotsContainer = document.getElementById('dotsContainer');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-    const closeBtn = document.getElementById('closeBtn');
-
-    let currentIndex = 0;
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID = 0;
-    let dragDistance = 0;
-
-    // ডট তৈরি করা
-    slides.forEach((_, index) => {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      if (index === 0) dot.classList.add('active');
-      dot.addEventListener('click', () => {
-        currentIndex = index;
-        updateSlider();
-      });
-      dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll('.dot');
-
-    // সোয়াইপ ও ড্র্যাগ লজিক
-    wrapper.addEventListener('touchstart', touchStart);
-    wrapper.addEventListener('touchmove', touchMove);
-    wrapper.addEventListener('touchend', touchEnd);
-
-    wrapper.addEventListener('mousedown', touchStart);
-    wrapper.addEventListener('mousemove', touchMove);
-    wrapper.addEventListener('mouseup', touchEnd);
-    wrapper.addEventListener('mouseleave', touchEnd);
-
-    function touchStart(e) {
-      isDragging = true;
-      startPos = getPositionX(e);
-      dragDistance = 0;
-      animationID = requestAnimationFrame(animation);
-      track.style.transition = 'none';
-    }
-
-    function touchMove(e) {
-      if (!isDragging) return;
-      const currentPosition = getPositionX(e);
-      currentTranslate = prevTranslate + currentPosition - startPos;
-      dragDistance = Math.abs(currentPosition - startPos);
-    }
-
-    function touchEnd() {
-      if (!isDragging) return;
-      isDragging = false;
-      cancelAnimationFrame(animationID);
-
-      const movedBy = currentTranslate - prevTranslate;
-
-      if (movedBy < -50 && currentIndex < slides.length - 1) {
-        currentIndex += 1;
-      }
-      if (movedBy > 50 && currentIndex > 0) {
-        currentIndex -= 1;
-      }
-
-      updateSlider();
-    }
-
-    function getPositionX(e) {
-      return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-    }
-
-    function animation() {
-      track.style.transform = `translateX(${currentTranslate}px)`;
-      if (isDragging) requestAnimationFrame(animation);
-    }
-
-    function updateSlider() {
-      currentTranslate = currentIndex * -wrapper.clientWidth;
-      prevTranslate = currentTranslate;
-      track.style.transition = 'transform 0.3s ease-out';
-      track.style.transform = `translateX(${currentTranslate}px)`;
-
-      counter.textContent = `${currentIndex + 1}/${slides.length}`;
-
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-      });
-    }
-
-    // ৫. ক্লিক ইভেন্ট (ছবিতে ক্লিক করলে লাইটবক্সে বড় হবে)
-    images.forEach(img => {
-      img.addEventListener('click', () => {
-        // যদি ড্র্যাগ না করে শুধুমাত্র ক্লিক করা হয় (dragDistance কম থাকলে)
-        if (dragDistance < 10) {
-          lightboxImg.src = img.src;
-          lightbox.classList.add('active');
-        }
-      });
-    });
-
-    // লাইটবক্স বন্ধ করা
-    lightbox.addEventListener('click', (e) => {
-      if (e.target !== lightboxImg) {
-        lightbox.classList.remove('active');
-      }
-    });
-
-    closeBtn.addEventListener('click', () => {
-      lightbox.classList.remove('active');
-    });
-  </script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desktop Portfolio Setup</title>
+  <title>Sahariya Islam Shuvo - Portfolio</title>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     * {
       box-sizing: border-box;
@@ -848,7 +24,48 @@
       overflow-x: hidden;
     }
 
-    /* ডেস্কে সবকটি উপাদান একত্রে রাখার কন্টেইনার */
+    /* ================= ১. প্রি-লোডার স্টাইল ================= */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0d1117;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-top: 5px solid #00d2ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    .loader-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: #00d2ff;
+      text-align: center;
+      padding: 0 10px;
+      letter-spacing: 1px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ================= ২. মেইন ডেস্ক সেটআপ ================= */
     .desk-setup {
       display: flex;
       flex-direction: column;
@@ -857,10 +74,10 @@
       padding: 20px;
     }
 
-    /* ================= ১. মনিটর এরিয়া ================= */
+    /* মনিটর */
     .monitor {
-      width: 520px;
-      height: 330px;
+      width: 580px;
+      height: 370px;
       background: #111;
       border: 14px solid #222;
       border-radius: 12px;
@@ -869,44 +86,85 @@
       overflow: hidden;
     }
 
-    /* মনিটরের ভেতরের স্ক্রিন (আপনার ডিটেইলস ও ছবি) */
+    /* মনিটরের ব্যাকগ্রাউন্ড ছবি */
     .screen {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #0d1117, #161b22);
-      color: #fff;
+      /* মামা, এখানে আপনার আসল ছবির লিঙ্ক বসাবেন */
+      background-image: url('https://picsum.photos/800/600?random=1');
+      background-size: cover;
+      background-position: center;
+      position: relative;
       display: flex;
-      align-items: center;
-      padding: 25px;
-      gap: 20px;
+      align-items: flex-end;
+      padding: 15px;
     }
 
-    .profile-img {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #0095f6;
-      box-shadow: 0 0 15px rgba(0, 149, 246, 0.4);
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.15));
+      z-index: 1;
     }
 
-    .user-details h2 {
+    /* ডিটেইলস কার্ড */
+    .user-details-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 15px 20px;
+      border-radius: 12px;
+      color: #ffffff;
+      width: 100%;
+    }
+
+    .user-details-card h2 {
       font-size: 22px;
-      color: #0095f6;
-      margin-bottom: 6px;
+      color: #00d2ff;
+      margin-bottom: 2px;
     }
 
-    .user-details h4 {
-      font-size: 14px;
-      color: #8b949e;
-      margin-bottom: 12px;
-    }
-
-    .user-details p {
+    .user-details-card h4 {
       font-size: 13px;
-      color: #c9d1d9;
-      line-height: 1.5;
+      color: #e0e0e0;
+      margin-bottom: 12px;
+      font-weight: 500;
     }
+
+    /* সোশ্যাল বাটন গ্রুপ */
+    .social-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .btn-fb { background: #1877f2; }
+    .btn-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .btn-msg { background: #0084ff; }
 
     /* মনিটরের স্ট্যান্ড */
     .monitor-stand {
@@ -923,9 +181,9 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    /* ================= ২. কিবোর্ড এরিয়া ================= */
+    /* ================= ৩. কিবোর্ড ================= */
     .keyboard {
-      width: 380px;
+      width: 420px;
       height: 110px;
       background: #2b2b2b;
       margin-top: 15px;
@@ -935,7 +193,7 @@
       grid-template-columns: repeat(12, 1fr);
       gap: 5px;
       box-shadow: 0 8px 15px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.1);
-      transform: rotateX(20deg); /* ৩ডি অ্যাঙ্গেল দেওয়ার জন্য */
+      transform: rotateX(20deg);
     }
 
     .key {
@@ -949,7 +207,7 @@
       background: #444;
     }
 
-    /* ================= ৩. কফি কাপ এরিয়া ================= */
+    /* ================= ৪. কফি কাপ ================= */
     .coffee-cup {
       position: absolute;
       right: -80px;
@@ -961,7 +219,6 @@
       box-shadow: inset -5px 0 10px rgba(0,0,0,0.1), 5px 10px 15px rgba(0,0,0,0.3);
     }
 
-    /* কপির ভেতরের অংশ */
     .coffee-cup::before {
       content: '';
       position: absolute;
@@ -973,7 +230,6 @@
       border-radius: 50%;
     }
 
-    /* কাপের হাতল (Handle) */
     .cup-handle {
       position: absolute;
       right: -14px;
@@ -985,32 +241,81 @@
       border-radius: 0 10px 10px 0;
     }
 
-    /* রেসপনসিভ এডজাস্টমেন্ট */
+    /* ================= ৫. ওয়াটসঅ্যাপ ফ্লোটিং পপ-আপ ================= */
+    .whatsapp-float {
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+      z-index: 5;
+      background: #25d366;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: transform 0.2s;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.05);
+    }
+
+    /* মোবাইলের জন্য রেসপনসিভ */
     @media (max-width: 650px) {
-      .monitor { width: 340px; height: 260px; }
-      .screen { flex-direction: column; text-align: center; }
-      .profile-img { width: 80px; height: 80px; }
-      .keyboard { width: 280px; height: 80px; }
-      .coffee-cup { right: -20px; bottom: -80px; }
+      .monitor { width: 350px; height: 320px; }
+      .keyboard { width: 300px; height: 90px; }
+      .coffee-cup { right: -15px; bottom: -80px; }
+      .social-buttons { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ১. প্রি-লোডার (ওয়েবসাইটে ঢোকার সময় দেখাবে) -->
+  <div id="preloader">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Welcome my website Sahariya islam shuvo.</div>
+  </div>
+
   <div class="desk-setup">
 
-    <!-- ১. মনিটর -->
+    <!-- ২. মনিটর -->
     <div class="monitor">
       <div class="screen">
-        <!-- আপনার ছবি -->
-        <img src="https://picsum.photos/200/200?random=1" alt="Profile" class="profile-img">
+        <div class="screen-overlay"></div>
         
-        <!-- আপনার ডিটেইলস -->
-        <div class="user-details">
-          <h2>আপনার নাম</h2>
-          <h4>ওয়েব ডেভেলপার / কনটেন্ট ক্রিয়েটর</h4>
-          <p>হ্যালো! আমি একজন প্রফেশনাল ডেভেলপার। আমার ওয়েবসাইটে আপনাকে স্বাগতম। নিচে কিবোর্ড এবং পাশে আমার প্রিয় কফি কাপ রাখা আছে!</p>
+        <!-- ইউজার ডিটেইলস ও বাটন -->
+        <div class="user-details-card">
+          <h2>Sahariya Islam Shuvo</h2>
+          <h4>Web Enthusiast & Content Creator</h4>
+          
+          <div class="social-buttons">
+            <!-- ফেসবুক বাটন -->
+            <a href="https://www.facebook.com/share/19AgNREPQj/" target="_blank" class="btn btn-fb">
+              <i class="fa-brands fa-facebook-f"></i> Facebook
+            </a>
+
+            <!-- ইন্সটাগ্রাম বাটন -->
+            <a href="https://www.instagram.com/sahariyashuvo_?igsh=MWRoNjNhdnlhOTg2YQ==" target="_blank" class="btn btn-insta">
+              <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
+
+            <!-- মেসেঞ্জার বাটন -->
+            <a href="https://m.me/19AgNREPQj" target="_blank" class="btn btn-msg">
+              <i class="fa-brands fa-facebook-messenger"></i> Message
+            </a>
+          </div>
         </div>
+
+        <!-- স্ক্রিনের ডান কোণায় ওয়াটসঅ্যাপ -->
+        <a href="https://wa.me/8801791996607" target="_blank" class="whatsapp-float">
+          <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> 01791996607
+        </a>
       </div>
     </div>
 
@@ -1018,9 +323,8 @@
     <div class="monitor-stand"></div>
     <div class="monitor-base"></div>
 
-    <!-- ২. কিবোর্ড -->
+    <!-- ৩. কিবোর্ড -->
     <div class="keyboard">
-      <!-- কিবোর্ডের বোতাম বা কি-সমূহ -->
       <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
       <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
       <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
@@ -1029,13 +333,24 @@
       <div class="key space"></div><div class="key"></div><div class="key"></div>
     </div>
 
-    <!-- ৩. কফি কাপ -->
+    <!-- ৪. কফি কাপ -->
     <div class="coffee-cup">
       <div class="cup-handle"></div>
     </div>
 
   </div>
 
+  <!-- লোডার হাইড করার জাভাস্ক্রিপ্ট -->
+  <script>
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      // ২.৫ সেকেন্ড পর লোডারটি গায়েব হয়ে যাবে
+      setTimeout(() => {
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+      }, 2500);
+    });
+  </script>
+
 </body>
 </html>
-
