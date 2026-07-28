@@ -3,58 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobile Fullscreen Touch Gallery</title>
+  <title>Instagram Style Slider</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: #0d0d0d;
+      background-color: #000000;
       color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+    }
+
+    /* পোস্ট কন্টেইনার */
+    .post-card {
+      width: 100%;
+      max-width: 470px; /* ইনস্টাগ্রাম পোস্টের স্ট্যান্ডার্ড সাইজ */
+      background-color: #000000;
+      border: 1px solid #262626;
+      border-radius: 8px;
       overflow: hidden;
     }
 
-    /* মূল গ্যালারি কন্টেইনার */
-    .slider-container {
-      width: 100vw;
-      height: 90vh; /* স্ক্রিনের অধিকাংশ জায়গা জুড়ে থাকবে */
+    /* ১. হেডার অংশ (প্রোফাইল, নাম, লোকেশন) */
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+    }
+
+    .profile-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .username-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .username {
+      font-weight: 600;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .verified-badge {
+      width: 14px;
+      height: 14px;
+      fill: #0095f6;
+    }
+
+    .location {
+      font-size: 12px;
+      color: #a8a8a8;
+      margin-top: 2px;
+    }
+
+    /* ২. ইমেজ স্লাইডার অংশ */
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
       overflow: hidden;
       cursor: grab;
       user-select: none;
-      display: flex;
-      align-items: center;
     }
 
-    .slider-container:active {
+    .slider-wrapper:active {
       cursor: grabbing;
     }
 
-    /* স্লাইডের ট্র্যাক */
+    /* পিকচার কাউন্টার (যেমন: 1/5) */
+    .image-counter {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(38, 38, 38, 0.75);
+      color: #f5f5f5;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      z-index: 10;
+      font-weight: 500;
+    }
+
     .slider-track {
       display: flex;
-      gap: 12px; /* ছবির মাঝের ফাঁকা জায়গা */
-      padding: 0 16px; /* বাম ও ডানের গ্যাপিং */
-      transition: transform 0.4s ease-out;
+      transition: transform 0.3s ease-out;
       will-change: transform;
     }
 
-    /* প্রতিটি ছবি ও কার্ডের স্টাইল */
     .slide {
-      /* ৮৮vw দেওয়াতে মূল ছবি স্পষ্ট থাকবে এবং ডানে পরবর্তী ছবির কিছু অংশ উঁকি দেবে */
-      flex: 0 0 88vw; 
-      height: 82vh;
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+      flex: 0 0 100%;
+      aspect-ratio: 4 / 5; /* ইনস্টাগ্রাম পোর্ট্রেট রেশিও */
+      background-color: #121212;
     }
 
     .slide img {
@@ -64,91 +121,79 @@
       pointer-events: none;
     }
 
-    /* ছবির ওপর ওভারলে ক্যাপশন */
-    .caption-box {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 40px 24px 28px 24px;
-      /* ডার্ক গ্রেডিয়েন্ট টেক্সট স্পষ্ট দেখার জন্য */
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
-      color: #ffffff;
-      pointer-events: none;
+    /* ৩. ফুটার ডট (Indicators) */
+    .post-footer {
+      padding: 12px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .caption-box h3 {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
+    .dots-container {
+      display: flex;
+      gap: 6px;
     }
 
-    .caption-box p {
-      font-size: 15px;
-      line-height: 1.5;
-      color: #e0e0e0;
-      opacity: 0.9;
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #555555;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #0095f6;
+      transform: scale(1.2);
     }
   </style>
 </head>
 <body>
 
-  <div class="slider-container" id="sliderContainer">
-    <div class="slider-track" id="sliderTrack">
-      
-      <!-- ১ নম্বর ছবি -->
-      <div class="slide">
-        <img src="https://picsum.photos/800/1200?random=1" alt="Image 1">
-        <div class="caption-box">
-          <h3>প্রথম ছবির ক্যাপশন</h3>
-          <p>এখানে প্রথম ছবি সম্পর্কিত বিস্তারিত তথ্য বা ডেসক্রিপশন থাকবে।</p>
+  <div class="post-card">
+    
+    <!-- হেডার (প্রোফাইল পিক, নাম ও লোকেশন) -->
+    <div class="post-header">
+      <img src="https://picsum.photos/100/100?random=99" alt="Profile" class="profile-pic">
+      <div class="user-info">
+        <div class="username-row">
+          <span class="username">heroemaniaco</span>
+          <!-- ভেরিফাইড ব্যাজ -->
+          <svg class="verified-badge" viewBox="0 0 24 24">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6.2 12.8l1.4-1.4 2.5 2.5 6.1-6.1 1.4 1.4-7.5 7.5z"/>
+          </svg>
         </div>
+        <span class="location">Madrid, Spain</span>
       </div>
-
-      <!-- ২ নম্বর ছবি -->
-      <div class="slide">
-        <img src="https://picsum.photos/800/1200?random=2" alt="Image 2">
-        <div class="caption-box">
-          <h3>দ্বিতীয় ছবির ক্যাপশন</h3>
-          <p>এখানে দ্বিতীয় ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
-        </div>
-      </div>
-
-      <!-- ৩ নম্বর ছবি -->
-      <div class="slide">
-        <img src="https://picsum.photos/800/1200?random=3" alt="Image 3">
-        <div class="caption-box">
-          <h3>তৃতীয় ছবির ক্যাপশন</h3>
-          <p>এখানে তৃতীয় ছবি সংক্রান্ত তথ্য যোগ করতে পারেন।</p>
-        </div>
-      </div>
-
-      <!-- ৪ নম্বর ছবি -->
-      <div class="slide">
-        <img src="https://picsum.photos/800/1200?random=4" alt="Image 4">
-        <div class="caption-box">
-          <h3>চতুর্থ ছবির ক্যাপশন</h3>
-          <p>এখানে চতুর্থ ছবি সম্পর্কিত বিস্তারিত লেখা থাকবে।</p>
-        </div>
-      </div>
-
-      <!-- ৫ নম্বর ছবি -->
-      <div class="slide">
-        <img src="https://picsum.photos/800/1200?random=5" alt="Image 5">
-        <div class="caption-box">
-          <h3>পঞ্চম ছবির ক্যাপশন</h3>
-          <p>এখানে পঞ্চম ছবির জন্য বিস্তারিত লেখা থাকবে।</p>
-        </div>
-      </div>
-
     </div>
+
+    <!-- ছবি ও টান দেওয়ার স্লাইডার এলাকা -->
+    <div class="slider-wrapper" id="sliderWrapper">
+      <!-- ছবি গণনার সংখ্যা (1/5) -->
+      <div class="image-counter" id="imageCounter">1/5</div>
+
+      <div class="slider-track" id="sliderTrack">
+        <div class="slide"><img src="https://picsum.photos/600/750?random=1" alt="Post 1"></div>
+        <div class="slide"><img src="https://picsum.photos/600/750?random=2" alt="Post 2"></div>
+        <div class="slide"><img src="https://picsum.photos/600/750?random=3" alt="Post 3"></div>
+        <div class="slide"><img src="https://picsum.photos/600/750?random=4" alt="Post 4"></div>
+        <div class="slide"><img src="https://picsum.photos/600/750?random=5" alt="Post 5"></div>
+      </div>
+    </div>
+
+    <!-- নিচের ডট ইন্ডিকেটর -->
+    <div class="post-footer">
+      <div class="dots-container" id="dotsContainer"></div>
+    </div>
+
   </div>
 
   <script>
-    const container = document.getElementById('sliderContainer');
+    const wrapper = document.getElementById('sliderWrapper');
     const track = document.getElementById('sliderTrack');
     const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('imageCounter');
+    const dotsContainer = document.getElementById('dotsContainer');
 
     let currentIndex = 0;
     let isDragging = false;
@@ -156,38 +201,32 @@
     let currentTranslate = 0;
     let prevTranslate = 0;
     let animationID = 0;
-    let autoSlideTimer;
 
-    // টাচ এবং মাউস ইভেন্ট
-    container.addEventListener('touchstart', touchStart);
-    container.addEventListener('touchmove', touchMove);
-    container.addEventListener('touchend', touchEnd);
+    // ১. ডট ইন্ডিকেটর তৈরি
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (index === 0) dot.classList.add('active');
+      dotsContainer.appendChild(dot);
+    });
 
-    container.addEventListener('mousedown', touchStart);
-    container.addEventListener('mousemove', touchMove);
-    container.addEventListener('mouseup', touchEnd);
-    container.addEventListener('mouseleave', touchEnd);
+    const dots = document.querySelectorAll('.dot');
 
-    startAutoSlide();
+    // ২. ইভেন্ট লিসেনার (টান দেওয়া এবং সোয়াইপ করার জন্য)
+    wrapper.addEventListener('touchstart', touchStart);
+    wrapper.addEventListener('touchmove', touchMove);
+    wrapper.addEventListener('touchend', touchEnd);
 
-    function startAutoSlide() {
-      autoSlideTimer = setInterval(() => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        setPositionByIndex();
-      }, 5000);
-    }
-
-    function resetAutoSlide() {
-      clearInterval(autoSlideTimer);
-      startAutoSlide();
-    }
+    wrapper.addEventListener('mousedown', touchStart);
+    wrapper.addEventListener('mousemove', touchMove);
+    wrapper.addEventListener('mouseup', touchEnd);
+    wrapper.addEventListener('mouseleave', touchEnd);
 
     function touchStart(e) {
       isDragging = true;
       startPos = getPositionX(e);
       animationID = requestAnimationFrame(animation);
       track.style.transition = 'none';
-      clearInterval(autoSlideTimer);
     }
 
     function touchMove(e) {
@@ -203,15 +242,15 @@
 
       const movedBy = currentTranslate - prevTranslate;
 
-      if (movedBy < -40 && currentIndex < slides.length - 1) {
+      // ছবি স্লাইড করার থ্রেশহোল্ড
+      if (movedBy < -50 && currentIndex < slides.length - 1) {
         currentIndex += 1;
       }
-      if (movedBy > 40 && currentIndex > 0) {
+      if (movedBy > 50 && currentIndex > 0) {
         currentIndex -= 1;
       }
 
-      setPositionByIndex();
-      resetAutoSlide();
+      updateSlider();
     }
 
     function getPositionX(e) {
@@ -219,20 +258,23 @@
     }
 
     function animation() {
-      setSliderPosition();
+      track.style.transform = `translateX(${currentTranslate}px)`;
       if (isDragging) requestAnimationFrame(animation);
     }
 
-    function setSliderPosition() {
-      track.style.transform = `translateX(${currentTranslate}px)`;
-    }
-
-    function setPositionByIndex() {
-      const slideWidth = slides[0].clientWidth + 12; // গ্যাপ সহ স্লাইড সাইজ
-      currentTranslate = currentIndex * -slideWidth;
+    function updateSlider() {
+      currentTranslate = currentIndex * -wrapper.clientWidth;
       prevTranslate = currentTranslate;
-      track.style.transition = 'transform 0.4s ease-out';
-      setSliderPosition();
+      track.style.transition = 'transform 0.3s ease-out';
+      track.style.transform = `translateX(${currentTranslate}px)`;
+
+      // কাউন্টার টেক্সট আপডেট (যেমন: 2/5)
+      counter.textContent = `${currentIndex + 1}/${slides.length}`;
+
+      // ডট আপডেট
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
     }
   </script>
 
