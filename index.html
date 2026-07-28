@@ -824,3 +824,218 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop Portfolio Setup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1e1e24, #2a2a36);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ডেস্কে সবকটি উপাদান একত্রে রাখার কন্টেইনার */
+    .desk-setup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding: 20px;
+    }
+
+    /* ================= ১. মনিটর এরিয়া ================= */
+    .monitor {
+      width: 520px;
+      height: 330px;
+      background: #111;
+      border: 14px solid #222;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* মনিটরের ভেতরের স্ক্রিন (আপনার ডিটেইলস ও ছবি) */
+    .screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0d1117, #161b22);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 25px;
+      gap: 20px;
+    }
+
+    .profile-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0095f6;
+      box-shadow: 0 0 15px rgba(0, 149, 246, 0.4);
+    }
+
+    .user-details h2 {
+      font-size: 22px;
+      color: #0095f6;
+      margin-bottom: 6px;
+    }
+
+    .user-details h4 {
+      font-size: 14px;
+      color: #8b949e;
+      margin-bottom: 12px;
+    }
+
+    .user-details p {
+      font-size: 13px;
+      color: #c9d1d9;
+      line-height: 1.5;
+    }
+
+    /* মনিটরের স্ট্যান্ড */
+    .monitor-stand {
+      width: 90px;
+      height: 40px;
+      background: linear-gradient(to bottom, #444, #222);
+    }
+
+    .monitor-base {
+      width: 200px;
+      height: 12px;
+      background: #333;
+      border-radius: 6px 6px 0 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    /* ================= ২. কিবোর্ড এরিয়া ================= */
+    .keyboard {
+      width: 380px;
+      height: 110px;
+      background: #2b2b2b;
+      margin-top: 15px;
+      border-radius: 8px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 5px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.1);
+      transform: rotateX(20deg); /* ৩ডি অ্যাঙ্গেল দেওয়ার জন্য */
+    }
+
+    .key {
+      background: #3a3a3a;
+      border-radius: 4px;
+      box-shadow: 0 2px 0 #1a1a1a;
+    }
+
+    .key.space {
+      grid-column: span 6;
+      background: #444;
+    }
+
+    /* ================= ৩. কফি কাপ এরিয়া ================= */
+    .coffee-cup {
+      position: absolute;
+      right: -80px;
+      bottom: 20px;
+      width: 60px;
+      height: 70px;
+      background: #ffffff;
+      border-radius: 0 0 20px 20px;
+      box-shadow: inset -5px 0 10px rgba(0,0,0,0.1), 5px 10px 15px rgba(0,0,0,0.3);
+    }
+
+    /* কপির ভেতরের অংশ */
+    .coffee-cup::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 50px;
+      height: 15px;
+      background: #4a2c11;
+      border-radius: 50%;
+    }
+
+    /* কাপের হাতল (Handle) */
+    .cup-handle {
+      position: absolute;
+      right: -14px;
+      top: 15px;
+      width: 15px;
+      height: 35px;
+      border: 5px solid #ffffff;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+    }
+
+    /* রেসপনসিভ এডজাস্টমেন্ট */
+    @media (max-width: 650px) {
+      .monitor { width: 340px; height: 260px; }
+      .screen { flex-direction: column; text-align: center; }
+      .profile-img { width: 80px; height: 80px; }
+      .keyboard { width: 280px; height: 80px; }
+      .coffee-cup { right: -20px; bottom: -80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="desk-setup">
+
+    <!-- ১. মনিটর -->
+    <div class="monitor">
+      <div class="screen">
+        <!-- আপনার ছবি -->
+        <img src="https://picsum.photos/200/200?random=1" alt="Profile" class="profile-img">
+        
+        <!-- আপনার ডিটেইলস -->
+        <div class="user-details">
+          <h2>আপনার নাম</h2>
+          <h4>ওয়েব ডেভেলপার / কনটেন্ট ক্রিয়েটর</h4>
+          <p>হ্যালো! আমি একজন প্রফেশনাল ডেভেলপার। আমার ওয়েবসাইটে আপনাকে স্বাগতম। নিচে কিবোর্ড এবং পাশে আমার প্রিয় কফি কাপ রাখা আছে!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- মনিটরের স্ট্যান্ড -->
+    <div class="monitor-stand"></div>
+    <div class="monitor-base"></div>
+
+    <!-- ২. কিবোর্ড -->
+    <div class="keyboard">
+      <!-- কিবোর্ডের বোতাম বা কি-সমূহ -->
+      <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+      <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+      <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+      <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+      <div class="key"></div><div class="key"></div><div class="key"></div><div class="key"></div>
+      <div class="key space"></div><div class="key"></div><div class="key"></div>
+    </div>
+
+    <!-- ৩. কফি কাপ -->
+    <div class="coffee-cup">
+      <div class="cup-handle"></div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+
