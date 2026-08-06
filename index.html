@@ -1,110 +1,459 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motorcycle Survey - Dhaka Zone Target Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-completed: #10b981;
+            --accent-remaining: #f59e0b;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Hind Siliguri', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
-    body {
-      background-color: #f4f7f6;
-      color: #333;
-      line-height: 1.6;
-    }
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white; padding: 24px; border-radius: 16px; margin-bottom: 24px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .header-titles h1 { font-size: 24px; color: #38bdf8; }
+        .header-titles p { font-size: 14px; color: #94a3b8; }
+        .credits {
+            text-align: right; background: rgba(255, 255, 255, 0.05); padding: 12px 20px;
+            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); font-size: 13px;
+        }
 
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .user-panel {
+            background: var(--card-bg); padding: 16px 24px; border-radius: 12px;
+            margin-bottom: 24px; border: 1px solid #e2e8f0; display: flex;
+            align-items: center; gap: 16px; flex-wrap: wrap;
+        }
+        .user-panel input {
+            padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+            font-size: 14px; outline: none; width: 250px;
+        }
 
-    header h1 {
-      font-size: 1.5rem;
-    }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card-bg); padding: 20px; border-radius: 12px;
+            border: 1px solid #e2e8f0; text-align: center;
+        }
+        .stat-card h3 { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
+        .controls-card {
+            background: var(--card-bg); padding: 20px; border-radius: 12px;
+            border: 1px solid #e2e8f0; margin-bottom: 24px; display: flex;
+            gap: 16px; flex-wrap: wrap; align-items: center;
+        }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 180px; }
+        select { padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; }
 
-    nav a:hover {
-      color: #1abc9c;
-    }
+        .chart-card, .table-card, .log-card {
+            background: var(--card-bg); padding: 24px; border-radius: 12px;
+            border: 1px solid #e2e8f0; margin-bottom: 24px;
+        }
 
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem;
-      background: white;
-      margin: 3rem auto;
-      max-width: 800px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
+        .table-wrapper { overflow-x: auto; max-height: 450px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background: #fafafa; color: var(--text-muted); position: sticky; top: 0; }
 
-    .hero h2 {
-      margin-bottom: 1rem;
-      color: #2c3e50;
-    }
+        .action-btn {
+            background: #0284c7; color: white; border: none; padding: 6px 12px;
+            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px;
+        }
+        .action-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-    .btn {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #1abc9c;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
+        .export-btn {
+            background: #10b981; color: white; border: none; padding: 10px 18px;
+            border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px;
+            display: inline-flex; align-items: center; gap: 8px; margin-left: auto;
+        }
 
-    .btn:hover {
-      background-color: #16a085;
-    }
+        .alert-toast {
+            position: fixed; bottom: 20px; right: 20px; background: #0f172a; color: white;
+            padding: 16px 24px; border-radius: 12px; border-left: 6px solid #10b981;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; z-index: 9999;
+        }
 
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background-color: #2c3e50;
-      color: white;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-  </style>
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+        .badge-category { background: #e0f2fe; color: #0369a1; }
+        .badge-brand { background: #fef3c7; color: #b45309; }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>My Brand</h1>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<div class="container">
+    <header>
+        <div class="header-titles">
+            <h1>Motorcycle Survey - Dhaka Zone Target Tracker</h1>
+            <p>ব্র্যান্ড ও মডেল ভিত্তিক ডাইনামিক লাইভ ডাটা এন্ট্রি ও অ্যানালিটিক্স</p>
+        </div>
+        <div class="credits">
+            <div><strong>Project:</strong> Motorcycle Survey</div>
+            <div><strong>Lead:</strong> Tuhin Pradhan</div>
+            <div><strong>Credit:</strong> Shuvo Biswas</div>
+        </div>
+    </header>
 
-  <main class="hero">
-    <h2>Welcome to My Website</h2>
-    <p>This is a modern responsive starter template. You can customize the text, colors, and layout anytime.</p>
-    <a href="#" class="btn">Get Started</a>
-  </main>
+    <!-- User Name Panel -->
+    <div class="user-panel">
+        <label for="surveyor-name"><strong>সার্ভেয়ার / কর্মী নাম:</strong></label>
+        <input type="text" id="surveyor-name" placeholder="আপনার নাম লিখুন..." value="Shuvo">
+        <button class="export-btn" onclick="exportToCSV()">📥 এক্সেল / CSV ডাউনলোড করুন</button>
+    </div>
 
-  <footer>
-    <p>&copy; 2026 My Website. All rights reserved.</p>
-  </footer>
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>মোট টার্গেট</h3>
+            <div class="value" id="stat-total-target" style="color: #2563eb;">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>কাজ সম্পন্ন</h3>
+            <div class="value" id="stat-completed" style="color: #10b981;">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>কাজ বাকি</h3>
+            <div class="value" id="stat-remaining" style="color: #f59e0b;">0</div>
+        </div>
+        <div class="stat-card">
+            <h3>অগ্রগতি</h3>
+            <div class="value" id="stat-progress" style="color: #8b5cf6;">0%</div>
+        </div>
+    </div>
 
+    <!-- Filters -->
+    <div class="controls-card">
+        <div class="filter-group">
+            <label>CC Category ফিল্টার</label>
+            <select id="filter-category"><option value="ALL">সকল ক্যাটাগরি</option></select>
+        </div>
+        <div class="filter-group">
+            <label>Brand ফিল্টার</label>
+            <select id="filter-brand"><option value="ALL">সকল ব্র্যান্ড</option></select>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-card">
+        <h2>ক্যাটাগরি ও ব্র্যান্ড ভিত্তিক অগ্রগতি</h2>
+        <canvas id="mainChart" height="100"></canvas>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-card">
+        <h2>মডেল ভিত্তিক লাইভ সার্ভে কন্ট্রোল প্যানেল</h2><br>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Dhaka Target</th>
+                        <th>Done</th>
+                        <th>Remaining</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="log-card">
+        <h2>সাম্প্রতিক কাজের হিস্ট্রি (Activity Log)</h2><br>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>সময়</th>
+                        <th>সার্ভেয়ার</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                    </tr>
+                </thead>
+                <tbody id="log-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Popup Notification -->
+<div id="toast" class="alert-toast"></div>
+
+<script>
+    const rawData = [
+        {"category": "MC 125", "brand": "Yamaha", "model": "Saluto", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "FZS Fi V 3.0", "dhaka_target": 4},
+        {"category": "MC 160", "brand": "Yamaha", "model": "FZS Fi V 2.0", "dhaka_target": 44},
+        {"category": "MC 160", "brand": "Yamaha", "model": "Fazer", "dhaka_target": 4},
+        {"category": "MC 160", "brand": "Yamaha", "model": "MT-15", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "MT-15 V2", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "R-15", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "R-15 V4", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "R-15 M", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Yamaha", "model": "FZS Fi V 4.0", "dhaka_target": 25},
+        {"category": "MC 160", "brand": "Yamaha", "model": "FZ-X", "dhaka_target": 4},
+        {"category": "MC 160", "brand": "Yamaha", "model": "FZS Fi Hybrid", "dhaka_target": 2},
+        {"category": "ATSC", "brand": "Yamaha", "model": "Ray ZR", "dhaka_target": 1},
+        {"category": "ATSC", "brand": "Yamaha", "model": "Ray ZR 125", "dhaka_target": 1},
+        {"category": "ATSC", "brand": "Yamaha", "model": "AEROX 155cc", "dhaka_target": 3},
+        {"category": "MC 100", "brand": "TVS", "model": "Metro ES", "dhaka_target": 0},
+        {"category": "MC 125", "brand": "TVS", "model": "Max", "dhaka_target": 0},
+        {"category": "MC 125", "brand": "TVS", "model": "Raider", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "TVS", "model": "RTR 160 DD", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "TVS", "model": "RTR 4V (SD)", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "TVS", "model": "RTR 4V (DD)", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "TVS", "model": "RTR 4V ABS", "dhaka_target": 2},
+        {"category": "ATSC", "brand": "TVS", "model": "Ntorq", "dhaka_target": 1},
+        {"category": "MC161+", "brand": "Royal Enfield", "model": "Hunter 350", "dhaka_target": 2},
+        {"category": "MC161+", "brand": "Royal Enfield", "model": "Bullet 350", "dhaka_target": 1},
+        {"category": "MC161+", "brand": "Royal Enfield", "model": "Classic 350", "dhaka_target": 23},
+        {"category": "MC161+", "brand": "Royal Enfield", "model": "Meteor 350", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Suzuki", "model": "Hayate EP", "dhaka_target": 2},
+        {"category": "MC 125", "brand": "Suzuki", "model": "GSX 125", "dhaka_target": 3},
+        {"category": "MC 160", "brand": "Suzuki", "model": "Gixxer SD", "dhaka_target": 24},
+        {"category": "MC 160", "brand": "Suzuki", "model": "Gixxer DD", "dhaka_target": 11},
+        {"category": "MC 160", "brand": "Suzuki", "model": "Gixxer'21 DD Non ABS", "dhaka_target": 18},
+        {"category": "MC 160", "brand": "Suzuki", "model": "Gixxer'21 FI & ABS", "dhaka_target": 15},
+        {"category": "MC 160", "brand": "Suzuki", "model": "Gixxer'21 SF FI & ABS", "dhaka_target": 11},
+        {"category": "MC161+", "brand": "Suzuki", "model": "Gixxer SF 250", "dhaka_target": 2},
+        {"category": "MC161+", "brand": "Suzuki", "model": "Gixxer 250", "dhaka_target": 1},
+        {"category": "ATSC", "brand": "Suzuki", "model": "Access", "dhaka_target": 3},
+        {"category": "MC 100", "brand": "Runner", "model": "Galaxy/Royal+", "dhaka_target": 0},
+        {"category": "ATSC", "brand": "Runner", "model": "Skooty 110", "dhaka_target": 1},
+        {"category": "ATSC", "brand": "Runner", "model": "Skooty 125", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Honda", "model": "Shine 100", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Honda", "model": "Dream 110", "dhaka_target": 9},
+        {"category": "MC 100", "brand": "Honda", "model": "Livo Disc", "dhaka_target": 5},
+        {"category": "MC 125", "brand": "Honda", "model": "SP 125", "dhaka_target": 12},
+        {"category": "MC 160", "brand": "Honda", "model": "SP160 STD", "dhaka_target": 3},
+        {"category": "MC 160", "brand": "Honda", "model": "SP160 ABS", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Honda", "model": "Xblade FI ABS", "dhaka_target": 25},
+        {"category": "MC161+", "brand": "Honda", "model": "Hornet 2.0", "dhaka_target": 10},
+        {"category": "MC161+", "brand": "Honda", "model": "NX200", "dhaka_target": 10},
+        {"category": "ATSC", "brand": "Honda", "model": "DIO", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Hero", "model": "HF Delux", "dhaka_target": 7},
+        {"category": "MC 100", "brand": "Hero", "model": "Splendor Pro/Plus", "dhaka_target": 3},
+        {"category": "MC 100", "brand": "Hero", "model": "Splendor+ Sports Drum", "dhaka_target": 0},
+        {"category": "MC 100", "brand": "Hero", "model": "Splendor+ Sports Disc", "dhaka_target": 3},
+        {"category": "MC 100", "brand": "Hero", "model": "Splendor XTec", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Hero", "model": "Passion Pro", "dhaka_target": 2},
+        {"category": "MC 100", "brand": "Hero", "model": "Passion Pro Disc", "dhaka_target": 0},
+        {"category": "MC 100", "brand": "Hero", "model": "Passion XPro XTec", "dhaka_target": 0},
+        {"category": "MC 125", "brand": "Hero", "model": "Glamour", "dhaka_target": 5},
+        {"category": "MC 125", "brand": "Hero", "model": "Glamour X", "dhaka_target": 2},
+        {"category": "MC 125", "brand": "Hero", "model": "Ignitor XTEC", "dhaka_target": 0},
+        {"category": "MC 125", "brand": "Hero", "model": "XTREME 125R", "dhaka_target": 10},
+        {"category": "MC 160", "brand": "Hero", "model": "Hunk New DD ABS'21", "dhaka_target": 2},
+        {"category": "MC161+", "brand": "Hero", "model": "XTREME 160R 4V", "dhaka_target": 4},
+        {"category": "ATSC", "brand": "Hero", "model": "Pleasure", "dhaka_target": 4},
+        {"category": "ATSC", "brand": "Hero", "model": "Xoom", "dhaka_target": 2},
+        {"category": "ATSC", "brand": "Hero", "model": "Maestro", "dhaka_target": 2},
+        {"category": "ATSC", "brand": "Hero", "model": "Xoom 125", "dhaka_target": 6},
+        {"category": "EV", "brand": "EV", "model": "Runner EV", "dhaka_target": 6},
+        {"category": "EV", "brand": "EV", "model": "Revoo EV", "dhaka_target": 9},
+        {"category": "MC 100", "brand": "Bajaj", "model": "Platina ES", "dhaka_target": 0},
+        {"category": "MC 100", "brand": "Bajaj", "model": "Discover 110 Disc New", "dhaka_target": 3},
+        {"category": "MC 125", "brand": "Bajaj", "model": "Discover125 Disc New", "dhaka_target": 15},
+        {"category": "MC 125", "brand": "Bajaj", "model": "Pulsar NS 125", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar 150 SD", "dhaka_target": 6},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar 150 SD ABS", "dhaka_target": 18},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar 150 TD ABS", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar NS 160 TD ABS", "dhaka_target": 1},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar N 160 FI ABS (DC)", "dhaka_target": 2},
+        {"category": "MC 160", "brand": "Bajaj", "model": "Pulsar N 160 USD", "dhaka_target": 1},
+        {"category": "MC161+", "brand": "CF Moto", "model": "CF Moto", "dhaka_target": 4}
+    ];
+
+    let savedCompleted = JSON.parse(localStorage.getItem('dhaka_survey_counts')) || {};
+    let activityLogs = JSON.parse(localStorage.getItem('dhaka_survey_logs')) || [];
+
+    let currentData = rawData.map((item, index) => ({
+        ...item, id: index, completed: savedCompleted[index] || 0
+    }));
+
+    let chartInstance = null;
+
+    function initFilters() {
+        const categories = [...new Set(rawData.map(d => d.category))];
+        const brands = [...new Set(rawData.map(d => d.brand))];
+
+        const catSelect = document.getElementById('filter-category');
+        categories.forEach(cat => catSelect.add(new Option(cat, cat)));
+
+        const brandSelect = document.getElementById('filter-brand');
+        brands.forEach(b => brandSelect.add(new Option(b, b)));
+
+        catSelect.addEventListener('change', render);
+        brandSelect.addEventListener('change', render);
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 4000);
+    }
+
+    function countWork(id) {
+        const surveyor = document.getElementById('surveyor-name').value.trim() || 'Anonymous';
+        const item = currentData.find(d => d.id === id);
+
+        if (item && item.completed < item.dhaka_target) {
+            item.completed += 1;
+            savedCompleted[id] = item.completed;
+            localStorage.setItem('dhaka_survey_counts', JSON.stringify(savedCompleted));
+
+            // Log activity
+            const logEntry = {
+                time: new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+                surveyor: surveyor,
+                category: item.category,
+                brand: item.brand,
+                model: item.model
+            };
+            activityLogs.unshift(logEntry);
+            localStorage.setItem('dhaka_survey_logs', JSON.stringify(activityLogs));
+
+            // Calculate category level remaining
+            const categoryItems = currentData.filter(d => d.category === item.category);
+            const catTarget = categoryItems.reduce((acc, d) => acc + d.dhaka_target, 0);
+            const catDone = categoryItems.reduce((acc, d) => acc + d.completed, 0);
+            const catRemaining = Math.max(0, catTarget - catDone);
+
+            showToast(`✅ [${item.model}]-এ ১টি কাজ সম্পন্ন হয়েছে! "${item.category}" ক্যাটাগরিতে মোট আর ${catRemaining}টি কাজ বাকি।`);
+            render();
+        }
+    }
+
+    function getFilteredData() {
+        const catVal = document.getElementById('filter-category').value;
+        const brandVal = document.getElementById('filter-brand').value;
+
+        return currentData.filter(d => 
+            (catVal === 'ALL' || d.category === catVal) &&
+            (brandVal === 'ALL' || d.brand === brandVal)
+        );
+    }
+
+    function updateStats(filteredData) {
+        const totalTarget = filteredData.reduce((acc, d) => acc + d.dhaka_target, 0);
+        const totalCompleted = filteredData.reduce((acc, d) => acc + d.completed, 0);
+        const totalRemaining = Math.max(0, totalTarget - totalCompleted);
+        const pct = totalTarget > 0 ? Math.round((totalCompleted / totalTarget) * 100) : 0;
+
+        document.getElementById('stat-total-target').textContent = totalTarget;
+        document.getElementById('stat-completed').textContent = totalCompleted;
+        document.getElementById('stat-remaining').textContent = totalRemaining;
+        document.getElementById('stat-progress').textContent = pct + '%';
+    }
+
+    function renderTable(filteredData) {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+
+        filteredData.forEach(item => {
+            const remaining = Math.max(0, item.dhaka_target - item.completed);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><span class="badge badge-category">${item.category}</span></td>
+                <td><span class="badge badge-brand">${item.brand}</span></td>
+                <td><strong>${item.model}</strong></td>
+                <td>${item.dhaka_target}</td>
+                <td style="color: #10b981; font-weight:700;">${item.completed}</td>
+                <td style="color: #f59e0b; font-weight:700;">${remaining}</td>
+                <td>
+                    <button class="action-btn" onclick="countWork(${item.id})" ${item.completed >= item.dhaka_target ? 'disabled' : ''}>
+                        +১ কাজ জমা (Click)
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderLogs() {
+        const logBody = document.getElementById('log-body');
+        logBody.innerHTML = '';
+        activityLogs.slice(0, 10).forEach(log => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${log.time}</td>
+                <td><strong>${log.surveyor}</strong></td>
+                <td><span class="badge badge-category">${log.category}</span></td>
+                <td><span class="badge badge-brand">${log.brand}</span></td>
+                <td>${log.model}</td>
+            `;
+            logBody.appendChild(tr);
+        });
+    }
+
+    function renderChart(filteredData) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const labels = filteredData.map(d => d.model);
+        const completedData = filteredData.map(d => d.completed);
+        const remainingData = filteredData.map(d => Math.max(0, d.dhaka_target - d.completed));
+
+        if (chartInstance) chartInstance.destroy();
+
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'সম্পন্ন', data: completedData, backgroundColor: '#10b981' },
+                    { label: 'বাকি', data: remainingData, backgroundColor: '#f59e0b' }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+            }
+        });
+    }
+
+    function exportToCSV() {
+        let csv = 'Time,Surveyor,Category,Brand,Model\n';
+        activityLogs.forEach(log => {
+            csv += `"${log.time}","${log.surveyor}","${log.category}","${log.brand}","${log.model}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Dhaka_Survey_Activity_Log.csv`;
+        link.click();
+    }
+
+    function render() {
+        const filteredData = getFilteredData();
+        updateStats(filteredData);
+        renderTable(filteredData);
+        renderLogs();
+        renderChart(filteredData);
+    }
+
+    initFilters();
+    render();
+</script>
 </body>
 </html>
